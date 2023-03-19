@@ -1,4 +1,6 @@
 
+import collider2D from "../core";
+
 collider2D.prototype.circle = function( x, y, radius ){
 
     return {
@@ -8,3 +10,5 @@ collider2D.prototype.circle = function( x, y, radius ){
     }
 
 }
+
+export default collider2D.prototype.circle;

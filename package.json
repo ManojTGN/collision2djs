@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup --format es --input ./src/main.js -o ./build/collision2d.js && uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
+    "bnt": "npm run build && npm run test",
+    "minify": "uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
     "test": "node ./test/test.js"
   },
   "repository": {
