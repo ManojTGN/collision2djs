@@ -1,10 +1,20 @@
 const collion2d = require('../build/collision2d.js');
 
 
-console.log(collion2d.name,collion2d.prototype);
-let RECT = collion2d.prototype.rect(0,0,0,0);
+// console.log(collion2d.name,collion2d.prototype);
+let RECT_1 = collion2d.prototype.rect(0,0,10,10);
+let RECT_2 = collion2d.prototype.rect(11,0,10,10);
 
-RECT.x = 10;
-console.log(RECT,RECT.x);
+RECT_2.onCollisionEnter = (event) => {
+    console.log(event);
+}
 
-console.log(collion2d.SHAPES);
+RECT_2.onCollisionExit = (event) => {
+    console.log(event);
+}
+
+RECT_2.x -= 2;
+console.log("-----------");
+RECT_2.x += 2;
+console.log("-----------");
+RECT_1 += 2;

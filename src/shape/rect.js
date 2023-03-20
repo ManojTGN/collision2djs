@@ -9,20 +9,49 @@ collider2D.prototype.rect = function( x, y, height, width ){
 
         height:height,
         width:width,
+        
+        trigger: true,
+        onCollisionEnter:(event)=>{},
+        onCollisionExit:(event)=>{},
+
+        _index:0,
+        _isColliding:false,
+        _type:collider2D.shape.rect,
 
         get x(){ return x;},
-        set x( X ){ x = X;collider2D.prototype.collision(this,()=>{console.log("COLLISION CHECKED")}) },
+        set x( X ){ 
+            x = X;
+
+            if(this.trigger)
+            collider2D.prototype._collision( this );
+        },
 
         get y(){ return y; },
-        set y( Y ){ y = Y; },
+        set y( Y ){ 
+            y = Y;
+
+            if(this.trigger)
+            collider2D.prototype._collision( this );
+        },
 
         get height(){ return height; },
-        set height( Height ){ height = Height; },
+        set height( Height ){ 
+            height = Height;
+
+            if(this.trigger)
+            collider2D.prototype._collision( this );
+        },
 
         get width(){ return width; },
-        set width( Width ){ width = Width; }
+        set width( Width ){ 
+            width = Width;
+
+            if(this.trigger)
+            collider2D.prototype._collision( this );
+        }
     }
 
+    collider2D.prototype._collision(rect);
     collider2D.SHAPES.push(rect);
     return rect;
 
