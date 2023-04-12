@@ -17,6 +17,11 @@ collider2D.prototype.square = function( x, y, width ){
 
         get width(){ return width; },
         set width( Width ){ width = Width; },
+
+        _type :collider2D.shape.square,
+
+        get _type(){ return _type;},
+        set _type(type){ return false;}
     }
 
     collider2D.SHAPES.push(square);

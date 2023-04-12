@@ -2,7 +2,6 @@
 
 class collider2D{
     
-    //todo: change to private
     static SHAPES = [];
     static shape = {
         point:0,
@@ -13,10 +12,6 @@ class collider2D{
 
         circle:4,
         triangle:5
-    }
-
-    constructor(){
-
     }
 
 }

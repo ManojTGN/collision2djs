@@ -5,9 +5,7 @@ collider2D.prototype._collision = function( obj ){
 
     let event = {
 
-        points:[],
-        shapes:[],
-        
+        shapes:[],        
         owner:obj,
 
         _isColliding:false

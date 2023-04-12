@@ -12,6 +12,11 @@ collider2D.prototype.point = function( x, y ){
 
         get y(){ return y; },
         set y( Y ){ y = Y; },
+
+        _type :collider2D.shape.point,
+
+        get _type(){ return _type;},
+        set _type(type){ return false;}
     }
 
     // collider2D.SHAPES.push(point);

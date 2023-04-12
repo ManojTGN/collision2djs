@@ -16,7 +16,7 @@ collider2D.prototype.rect = function( x, y, height, width ){
 
         _index:0,
         _isColliding:false,
-        _type:collider2D.shape.rect,
+        _type :collider2D.shape.rect,
 
         get x(){ return x;},
         set x( X ){ 
@@ -48,7 +48,10 @@ collider2D.prototype.rect = function( x, y, height, width ){
 
             if(this.trigger)
             collider2D.prototype._collision( this );
-        }
+        },
+
+        get _type(){ console.log("printed:",this._type);return _type; },
+        set _type(type){ return false; }
     }
 
     collider2D.prototype._collision(rect);
