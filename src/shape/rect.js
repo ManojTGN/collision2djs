@@ -48,10 +48,8 @@ collider2D.prototype.rect = function( x, y, height, width ){
 
             if(this.trigger)
             collider2D.prototype._collision( this );
-        },
-
-        get _type(){ console.log("printed:",this._type);return _type; },
-        set _type(type){ return false; }
+        }
+        
     }
 
     collider2D.prototype._collision(rect);
