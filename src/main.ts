@@ -5,20 +5,7 @@ import { Rect, TRect } from "./shape/rect.js"
 import { Circle, TCircle } from "./shape/circle.js"
 import { Triangle, TTriangle } from "./shape/triangle.js"
 
-enum Shape{
-    point,
-    line,
-
-    square,
-    rect,
-
-    circle,
-    triangle
-};
-
 export default class Collision2D{
-    
-    static Shape = Shape;
 
     point:TPoint;
     line:TLine;
