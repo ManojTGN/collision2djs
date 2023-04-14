@@ -5,7 +5,7 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "build": "tsc && rollup --format es --input ./build/main.js -o ./build/collision2d.js && uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
+    "build": "tsc && rollup --format es --input ./build/tsBuild/main.js -o ./build/collision2d.js && uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
     "bnt": "npm run build && npm run test",
     "minify": "uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
     "test": "node ./test/test.js"

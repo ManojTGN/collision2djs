@@ -14,7 +14,8 @@ export class Shapes{
     
     static add(element:Point|Line|Rect|Circle|Triangle):void{
         Shapes.SHAPES.push(element);
-        Shapes.collision(element);
+        // Shapes.collision(element);
+        Shapes.collision_all();
     }
 
     static remove(element:Point|Line|Rect|Circle|Triangle):void{
@@ -36,6 +37,12 @@ export class Shapes{
 
         if(Events.length > 0)
         element.onCollision(Events);
+    }
+
+    static collision_all(){
+        Shapes.SHAPES.forEach((shape) => {
+            Shapes.collision(shape);
+        });
     }
 
 }

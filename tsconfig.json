@@ -5,7 +5,7 @@
         "strict": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "outDir": "./build"
+        "outDir": "./build/tsBuild"
     },
     "include": ["./src/**/*"],
     "exclude":[]
