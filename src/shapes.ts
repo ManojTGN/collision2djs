@@ -14,8 +14,8 @@ export class Shapes{
     
     static add(element:Point|Line|Rect|Circle|Triangle):void{
         Shapes.SHAPES.push(element);
-        // Shapes.collision(element);
-        Shapes.collision_all();
+        Shapes.collision(element);
+        // Shapes.collision_all();
     }
 
     static remove(element:Point|Line|Rect|Circle|Triangle):void{
@@ -23,20 +23,24 @@ export class Shapes{
     }
 
     static collision(element:Point|Line|Rect|Circle|Triangle){
-        if(!element.onTrigger) return;
-        
+        //todo: change enter,curr_collision,exit
         let Events:TEvent[] = [];
         Shapes.SHAPES.forEach((shape)=>{
             if(shape == element || !shape.onTrigger) return;
             
+            let prevCollision = element.collisionWith.get(shape);
             let points = shape.isCollideWith(element);
-            if(points != null){
+            if(points == null && prevCollision == true){
+                //todo: onCollisionExit;
+                return;
+            }else if(points != null && prevCollision == false){
                 Events.push({shape:shape,points});
+                element.collisionWith.set(shape,true);
             }
         });
 
-        if(Events.length > 0)
-        element.onCollision(Events);
+        if(Events.length > 0 && element.onCollisionEnter != null)
+        element.onCollisionEnter(Events);
     }
 
     static collision_all(){

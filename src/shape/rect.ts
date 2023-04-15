@@ -12,7 +12,8 @@ export class Rect{
     width:number;
     height:number;
     onTrigger:boolean;
-    onCollision: (event:TEvent[])=>void;
+    onCollisionEnter: (event:TEvent[])=>void;
+    collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
 
     isCollideWith( shape: Point|Line|this|Circle|Triangle ):Point[]|null{
         return null;
@@ -24,7 +25,8 @@ export class Rect{
         this.width = width;
         this.height = height;
         this.onTrigger = true;
-        this.onCollision = (event:TEvent[]) => { }
+        this.collisionWith = new Map();
+        this.onCollisionEnter = (event:TEvent[]) => { }
 
         Shapes.add(this);
     }

@@ -22,4 +22,5 @@ export default class Collision2D{
         this.circle = Circle;
         this.triangle = Triangle;
     }
+    
 };

@@ -5,28 +5,68 @@ import { Rect } from "./rect";
 import { Triangle } from "./triangle";
 
 export type TLine = new (x1:number,y1:number,x2:number,y2:number) => void;
+// type SHAPES = Point|Line|Rect|Circle|Triangle;
 
 export class Line{
-    x1:number;
-    y1:number;
-    x2:number;
-    y2:number;
+    point1:Point;
+    point2:Point;
     onTrigger:boolean;
-    onCollision: (event:TEvent[])=>void;
+    collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
+    onCollisionEnter: ((event:TEvent[])=>void)|null;
+    onCollision: ((event:TEvent[])=>void)|null;
+    onCollisionExit: ((event:TEvent[])=>void)|null;
 
-    isCollideWith( shape: Point|this|Rect|Circle|Triangle ):Point[]|null{
+    set x1(x1:number){
+        this.point1.x = x1;
+        Shapes.collision(this);
+    }
+    get x1():number{return this.point1.x;}
+
+    set y1(y1:number){
+        this.point1.y = y1;
+        Shapes.collision(this);
+    }
+    get y1():number{return this.point1.y;}
+
+    set x2(x2:number){
+        this.point2.x = x2;
+        Shapes.collision(this);
+    }
+    get x2():number{return this.point2.x;}
+
+    set y2(y2:number){
+        this.point2.y = y2;
+        Shapes.collision(this);
+    }
+    get y2():number{return this.point2.y;}
+
+    set p1(p1:Point){
+        this.point1.x = p1.x;
+        this.point1.y = p1.y;
+        Shapes.collision(this);
+    }
+    get p1():Point{return this.point1;}
+
+    set p2(p2:Point){
+        this.point2.x = p2.x;
+        this.point2.y = p2.y;
+        Shapes.collision(this);
+    }
+    get p2():Point{return this.point2;}
+
+    isCollideWith( shape: Point|Line|Rect|Circle|Triangle):Point[]|null{
         if(shape instanceof Line){
-            const denominator = ((shape.y2 - shape.y1) * (this.x2 - this.x1)) - ((shape.x2 - shape.x1) * (this.y2 - this.y1));
+            const denominator = ((shape.point2.y - shape.point1.y) * (this.point2.x - this.point1.x)) - ((shape.point2.x - shape.point1.x) * (this.point2.y - this.point1.y));
             if (denominator === 0) {
                 return null;
             }
 
-            const ua = (((shape.x2 - shape.x1) * (this.y1 - shape.y1)) - ((shape.y2 - shape.y1) * (this.x1 - shape.x1))) / denominator;
-            const ub = (((this.x2 - this.x1) * (this.y1 - shape.y1)) - ((this.y2 - this.y1) * (this.x1 - shape.x1))) / denominator;
+            const ua = (((shape.point2.x - shape.point1.x) * (this.point1.y - shape.point1.y)) - ((shape.point2.y - shape.point1.y) * (this.point1.x - shape.point1.x))) / denominator;
+            const ub = (((this.point2.x - this.point1.x) * (this.point1.y - shape.point1.y)) - ((this.point2.y - this.point1.y) * (this.point1.x - shape.point1.x))) / denominator;
 
             if (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1) {
-                const intersectionX = this.x1 + (ua * (this.x2 - this.x1));
-                const intersectionY = this.y1 + (ua * (this.y2 - this.y1));
+                const intersectionX = this.point1.x + (ua * (this.point2.x - this.point1.x));
+                const intersectionY = this.point1.y + (ua * (this.point2.y - this.point1.y));
                 return [new Point( intersectionX, intersectionY, true)];
             }
 
@@ -36,13 +76,15 @@ export class Line{
     }
 
     constructor(x1:number,y1:number,x2:number,y2:number){
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.onTrigger = true;
+        this.point1 = new Point(x1,y1,true);
+        this.point2 = new Point(x2,y2,true);
 
-        this.onCollision = (event:TEvent[]) => { }
+        this.onTrigger = true;
+        this.collisionWith = new Map();
+
+        this.onCollisionEnter = null;
+        this.onCollision = null;
+        this.onCollisionExit = null;
         Shapes.add(this);
     }
 
