@@ -12,6 +12,7 @@ export class Line{
     point2:Point;
     onTrigger:boolean;
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
+    
     onCollisionEnter: ((event:TEvent[])=>void)|null;
     onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
 

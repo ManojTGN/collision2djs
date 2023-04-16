@@ -7,28 +7,44 @@ import { Rect } from "./rect";
 export type TTriangle = new (x1:number,y1:number,x2:number,y2:number,x3:number,y3:number) => void;
 
 export class Triangle{
-    x1:number;
-    y1:number;
-    x2:number;
-    y2:number;
-    x3:number;
-    y3:number;
+    point1:Point;
+    point2:Point;
+    point3:Point;
     onTrigger:boolean;
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
     onCollisionEnter: ((event:TEvent[])=>void)|null;
     onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
+
+    set p1(p1:Point){
+        this.point1.x = p1.x;
+        this.point1.y = p1.y;
+        Shapes.collision(this);
+    }
+    get p1():Point{return this.point1;}
+
+    set p2(p2:Point){
+        this.point2.x = p2.x;
+        this.point2.y = p2.y;
+        Shapes.collision(this);
+    }
+    get p2():Point{return this.point2;}
+
+    set p3(p3:Point){
+        this.point2.x = p3.x;
+        this.point2.y = p3.y;
+        Shapes.collision(this);
+    }
+    get p3():Point{return this.point3;}
+    
 
     isCollideWith( shape: Point|Line|Rect|Circle|this ):Point[]|null{
         return null;
     }
 
     constructor(x1:number,y1:number,x2:number,y2:number,x3:number,y3:number){
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.x3 = x3;
-        this.y3 = y3;
+        this.point1 = new Point(x1,y1,true);
+        this.point2 = new Point(x2,y2,true);
+        this.point3 = new Point(x3,y3,true);
         this.onTrigger = true;
         this.collisionWith = new Map();
         this.onCollisionEnter = null;
