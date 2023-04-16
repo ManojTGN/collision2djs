@@ -10,8 +10,9 @@ export class Point{
     x:number;
     y:number;
     onTrigger:boolean;
-    onCollisionEnter: (event:TEvent[])=>void;
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
+    onCollisionEnter: ((event:TEvent[])=>void)|null;
+    onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
 
     isCollideWith( shape: this|Line|Rect|Circle|Triangle ):Point[]|null{
         return null;
@@ -22,7 +23,8 @@ export class Point{
         this.y = y;
         this.onTrigger = true;
         this.collisionWith = new Map();
-        this.onCollisionEnter = (event:TEvent[]) => { }
+        this.onCollisionEnter = null;
+        this.onCollisionExit = null;
 
         if(!reference)
         Shapes.add(this);

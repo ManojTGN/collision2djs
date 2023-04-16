@@ -11,8 +11,9 @@ export class Circle{
     y:number;
     radius:number;
     onTrigger:boolean;
-    onCollisionEnter: (event:TEvent[])=>void;
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
+    onCollisionEnter: ((event:TEvent[])=>void)|null;
+    onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
     
     isCollideWith( shape: Point|Line|Rect|this|Triangle ):Point[]|null{
         return null;
@@ -24,7 +25,8 @@ export class Circle{
         this.radius = radius;
         this.onTrigger = true;
         this.collisionWith = new Map();
-        this.onCollisionEnter = (event:TEvent[]) => { }
+        this.onCollisionEnter = null;
+        this.onCollisionExit = null;
 
         Shapes.add(this);
     }

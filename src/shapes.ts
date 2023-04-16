@@ -24,23 +24,47 @@ export class Shapes{
 
     static collision(element:Point|Line|Rect|Circle|Triangle){
         //todo: change enter,curr_collision,exit
-        let Events:TEvent[] = [];
+        let En_Events: Map<(Point|Line|Rect|Circle|Triangle),TEvent[]> = new Map();
+        let Ex_Events: Map<(Point|Line|Rect|Circle|Triangle),(Point|Line|Rect|Circle|Triangle)[]> = new Map();
+        
+        Ex_Events.set(element,[]);
+        En_Events.set(element,[]);
+
         Shapes.SHAPES.forEach((shape)=>{
-            if(shape == element || !shape.onTrigger) return;
-            
+            if( shape == element ) return;
+
             let prevCollision = element.collisionWith.get(shape);
             let points = shape.isCollideWith(element);
-            if(points == null && prevCollision == true){
-                //todo: onCollisionExit;
-                return;
-            }else if(points != null && prevCollision == false){
-                Events.push({shape:shape,points});
+            
+            if(points == null && prevCollision == true){ // EXIT
+                let arr = Ex_Events.get(element);
+                if(arr){
+                    arr.push(shape);
+                    Ex_Events.set(element,arr);
+                }
+                element.collisionWith.delete(shape);
+            }else if(points != null && !prevCollision){ // ENTER
+                let arr = En_Events.get(element);
+                if(arr){
+                    arr.push({shape:shape,points:points});
+                    En_Events.set(element,arr);
+                }
                 element.collisionWith.set(shape,true);
             }
         });
 
-        if(Events.length > 0 && element.onCollisionEnter != null)
-        element.onCollisionEnter(Events);
+        //console.log("EN_EVENTS");
+        En_Events.forEach((value,key)=>{
+            if(value.length > 0 && key.onCollisionEnter != null){
+                key.onCollisionEnter(value);
+            }
+        });
+
+        Ex_Events.forEach((value,key)=>{
+            if(value.length > 0 && key.onCollisionExit != null){
+                key.onCollisionExit(value);
+            }
+        });
     }
 
     static collision_all(){

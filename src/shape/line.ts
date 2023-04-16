@@ -13,8 +13,7 @@ export class Line{
     onTrigger:boolean;
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
     onCollisionEnter: ((event:TEvent[])=>void)|null;
-    onCollision: ((event:TEvent[])=>void)|null;
-    onCollisionExit: ((event:TEvent[])=>void)|null;
+    onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
 
     set x1(x1:number){
         this.point1.x = x1;
@@ -56,20 +55,20 @@ export class Line{
 
     isCollideWith( shape: Point|Line|Rect|Circle|Triangle):Point[]|null{
         if(shape instanceof Line){
-            const denominator = ((shape.point2.y - shape.point1.y) * (this.point2.x - this.point1.x)) - ((shape.point2.x - shape.point1.x) * (this.point2.y - this.point1.y));
-            if (denominator === 0) {
-                return null;
+
+            const denominator = (shape.point2.y - shape.point1.y) * (this.point2.x - this.point1.x) - (shape.point2.x - shape.point1.x) * (this.point2.y - this.point1.y);
+            if (denominator == 0) {
+            return null; // The lines are parallel.
             }
 
-            const ua = (((shape.point2.x - shape.point1.x) * (this.point1.y - shape.point1.y)) - ((shape.point2.y - shape.point1.y) * (this.point1.x - shape.point1.x))) / denominator;
-            const ub = (((this.point2.x - this.point1.x) * (this.point1.y - shape.point1.y)) - ((this.point2.y - this.point1.y) * (this.point1.x - shape.point1.x))) / denominator;
+            const ua = ((shape.point2.x - shape.point1.x) * (this.point1.y - shape.point1.y) - (shape.point2.y - shape.point1.y) * (this.point1.x - shape.point1.x)) / denominator;
+            const ub = ((this.point2.x - this.point1.x) * (this.point1.y - shape.point1.y) - (this.point2.y - this.point1.y) * (this.point1.x - shape.point1.x)) / denominator;
 
-            if (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1) {
-                const intersectionX = this.point1.x + (ua * (this.point2.x - this.point1.x));
-                const intersectionY = this.point1.y + (ua * (this.point2.y - this.point1.y));
-                return [new Point( intersectionX, intersectionY, true)];
-            }
+            const x = this.point1.x + ua * (this.point2.x - this.point1.x);
+            const y = this.point1.y + ua * (this.point2.y - this.point1.y);
 
+            return [new Point( x, y, true)];
+            
         }
 
         return null;
@@ -83,7 +82,6 @@ export class Line{
         this.collisionWith = new Map();
 
         this.onCollisionEnter = null;
-        this.onCollision = null;
         this.onCollisionExit = null;
         Shapes.add(this);
     }

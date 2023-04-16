@@ -14,8 +14,9 @@ export class Triangle{
     x3:number;
     y3:number;
     onTrigger:boolean;
-    onCollisionEnter: (event:TEvent[])=>void;
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
+    onCollisionEnter: ((event:TEvent[])=>void)|null;
+    onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
 
     isCollideWith( shape: Point|Line|Rect|Circle|this ):Point[]|null{
         return null;
@@ -30,7 +31,8 @@ export class Triangle{
         this.y3 = y3;
         this.onTrigger = true;
         this.collisionWith = new Map();
-        this.onCollisionEnter = (event:TEvent[]) => { }
+        this.onCollisionEnter = null;
+        this.onCollisionExit = null;
 
         Shapes.add(this);
     }
