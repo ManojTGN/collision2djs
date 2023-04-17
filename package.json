@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc && rollup --format es --input ./build/tsBuild/main.js -o ./build/collision2d.js && uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
-    "bnt": "npm run build && npm run test",
+    "bnt": "npm run build && npm run browser && npm run test",
+    "browser":"browserify ./build/collision2d.js -p esmify > ./build/bundle.js",
     "minify": "uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
     "test": "node ./test/test.js"
   },
@@ -26,6 +27,8 @@
   },
   "homepage": "https://github.com/ManojTGN/collision2djs#readme",
   "devDependencies": {
+    "browserify": "^17.0.0",
+    "esmify": "^2.1.1",
     "typescript": "^5.0.4",
     "uglify-js": "^3.17.4",
     "uglifyjs-folder": "^3.2.0"

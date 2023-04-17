@@ -35,7 +35,7 @@ export class Shapes{
 
             let prevCollision = element.collisionWith.get(shape);
             let points = shape.isCollideWith(element);
-            
+
             if(points == null && prevCollision == true){ // EXIT
                 let arr = Ex_Events.get(element);
                 if(arr){
@@ -53,7 +53,7 @@ export class Shapes{
             }
         });
 
-        //console.log("EN_EVENTS");
+
         En_Events.forEach((value,key)=>{
             if(value.length > 0 && key.onCollisionEnter != null){
                 key.onCollisionEnter(value);
