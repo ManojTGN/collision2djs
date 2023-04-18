@@ -1,3 +1,4 @@
+import Collision from "../collision.js";
 import {Shapes, TEvent} from "../shapes.js"
 import { Circle } from "./circle.js";
 import { Line } from "./line.js";
@@ -39,6 +40,22 @@ export class Rect{
     get height():number{return this.h;}
 
     isCollideWith( shape: Point|Line|this|Circle|Triangle ):Point[]|null{
+        if(shape instanceof Line)
+            return Collision.LineRect.bind(shape,this)()
+
+        if(shape instanceof Point)
+            return Collision.PointRect.bind(shape,this)()
+        
+        if(shape instanceof Rect)
+            return Collision.RectRect.bind(this,shape)()
+        
+        if(shape instanceof Circle)
+            return Collision.RectCircle.bind(this,shape)()
+
+        if(shape instanceof Triangle)
+            return Collision.RectTriangle.bind(this,shape)()
+
+        
         return null;
     }
 

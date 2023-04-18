@@ -1,3 +1,4 @@
+import Collision from "../collision";
 import {Shapes, TEvent} from "../shapes";
 import { Circle } from "./circle";
 import { Line } from "./line";
@@ -13,6 +14,21 @@ export class Point{
     onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
 
     isCollideWith( shape: this|Line|Rect|Circle|Triangle ):Point[]|null{
+        if(shape instanceof Line)
+            return Collision.PointLine.bind(this,shape)()
+
+        if(shape instanceof Point)
+            return Collision.PointPoint.bind(this,shape)()
+        
+        if(shape instanceof Rect)
+            return Collision.PointRect.bind(this,shape)()
+        
+        if(shape instanceof Circle)
+            return Collision.PointCircle.bind(this,shape)()
+
+        if(shape instanceof Triangle)
+            return Collision.PointTriangle.bind(this,shape)()
+
         return null;
     }
 

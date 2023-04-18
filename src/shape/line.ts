@@ -53,25 +53,20 @@ export class Line{
     get p2():Point{return this.point2;}
 
     isCollideWith( shape: Point|Line|Rect|Circle|Triangle):Point[]|null{
-        if(shape instanceof Line){
+        if(shape instanceof Line)
             return Collision.LineLine.bind(this,shape)()
-        }
 
-        if(shape instanceof Point){
+        if(shape instanceof Point)
             return Collision.PointLine.bind(shape,this)()
-        }
-
-        if(shape instanceof Rect){
+        
+        if(shape instanceof Rect)
             return Collision.LineRect.bind(this,shape)()
-        }
-
-        if(shape instanceof Circle){
+        
+        if(shape instanceof Circle)
             return Collision.LineCircle.bind(this,shape)()
-        }
 
-        if(shape instanceof Triangle){
+        if(shape instanceof Triangle)
             return Collision.LineTriangle.bind(this,shape)()
-        }
 
         return null;
     }
