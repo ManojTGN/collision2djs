@@ -7,6 +7,11 @@ import { Triangle } from "./shape/triangle";
 export default class Collision {
 
     static PointPoint(this:Point, shape:Point):Point[]|null{
+
+        if(this.x == shape.x && this.y == shape.y){
+            return [this];
+        }
+
         return null;
     }
 
@@ -24,14 +29,35 @@ export default class Collision {
     }
 
     static PointRect(this:Point, shape:Rect):Point[]|null{
+        if(
+            this.x >= shape.x && this.x <= shape.x + shape.width &&
+            this.y >= shape.y && this.y <= shape.y + shape.height 
+        ){
+            return [this];
+        }
+
         return null;
     }
 
     static PointCircle(this:Point, shape:Circle):Point[]|null{
+        const distance = Math.sqrt(Math.pow(shape.x - this.x, 2) + Math.pow(shape.y - this.y, 2));
+        if(distance <= shape.radius){
+            return [this];
+        }
+
         return null;
-    }
+    }             
 
     static PointTriangle(this:Point, shape:Triangle):Point[]|null{
+        const area  = Math.abs((shape.point2.x - shape.point1.x) * (shape.point3.y - shape.point1.y) - (shape.point3.x - shape.point1.x) * (shape.point2.y - shape.point1.y));
+        const area1 = Math.abs((shape.point1.x - this.x) * (shape.point2.y - this.y) - (shape.point2.x - this.x) * (shape.point1.y - this.y));
+        const area2 = Math.abs((shape.point2.x - this.x) * (shape.point3.y - this.y) - (shape.point3.x - this.x) * (shape.point2.y - this.y));
+        const area3 = Math.abs((shape.point3.x - this.x) * (shape.point1.y - this.y) - (shape.point1.x - this.x) * (shape.point3.y - this.y));
+        
+        if(area === area1 + area2 + area3){
+            return [this];
+        }
+
         return null;
     }
 
@@ -93,6 +119,7 @@ export default class Collision {
         return null;
     }
 
+    //todo: fix line circle collision
     static LineCircle(this:Line, shape:Circle):Point[]|null{
         
         const points = [];
@@ -172,7 +199,17 @@ export default class Collision {
 
     }
 
+    //todo: fix rect rect collision
     static RectRect(this:Rect, shape:Rect):Point[]|null{
+        const left = Math.max(this.x, shape.x);
+        const top = Math.max(this.y, shape.y);
+        const right = Math.min(this.x + this.width, shape.x + shape.width);
+        const bottom = Math.min(this.y + this.height, shape.y + shape.height);
+        const width = right - left;
+        const height = bottom - top;
+        if (width > 0 && height > 0) {
+            return [new Point(left, top, true), new Point(right, bottom, true) ];
+        }
         return null;
     }
 
