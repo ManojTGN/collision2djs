@@ -15,7 +15,6 @@ export class Shapes{
     static add(element:Point|Line|Rect|Circle|Triangle):void{
         Shapes.SHAPES.push(element);
         Shapes.collision(element);
-        // Shapes.collision_all();
     }
 
     static remove(element:Point|Line|Rect|Circle|Triangle):void{
@@ -23,7 +22,7 @@ export class Shapes{
     }
 
     static collision(element:Point|Line|Rect|Circle|Triangle){
-        //todo: change enter,curr_collision,exit
+    
         let En_Events: Map<(Point|Line|Rect|Circle|Triangle),TEvent[]> = new Map();
         let Ex_Events: Map<(Point|Line|Rect|Circle|Triangle),(Point|Line|Rect|Circle|Triangle)[]> = new Map();
         
@@ -51,6 +50,7 @@ export class Shapes{
                 }
                 element.collisionWith.set(shape,true);
             }
+            
         });
 
 

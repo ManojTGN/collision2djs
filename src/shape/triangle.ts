@@ -4,8 +4,6 @@ import { Line } from "./line";
 import { Point } from "./point";
 import { Rect } from "./rect";
 
-export type TTriangle = new (x1:number,y1:number,x2:number,y2:number,x3:number,y3:number) => void;
-
 export class Triangle{
     point1:Point;
     point2:Point;

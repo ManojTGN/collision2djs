@@ -4,8 +4,6 @@ import { Point } from "./point";
 import { Rect } from "./rect";
 import { Triangle } from "./triangle";
 
-export type TCircle = new (x:number,y:number,radius:number) => void;
-
 export class Circle{
     point:Point;
     r:number;

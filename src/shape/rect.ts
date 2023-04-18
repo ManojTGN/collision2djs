@@ -4,8 +4,6 @@ import { Line } from "./line.js";
 import { Point } from "./point.js";
 import { Triangle } from "./triangle.js";
 
-export type TRect = new (x:number,y:number,width:number,height:number) => void;
-
 export class Rect{
     point:Point;
     w:number;
