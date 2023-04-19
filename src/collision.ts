@@ -213,19 +213,65 @@ export default class Collision {
         return null;
     }
 
+    //todo: fix line circle collision
     static RectCircle(this:Rect, shape:Circle):Point[]|null{
+        const top = shape.isCollideWith(new Line(this.x,this.y,this.x+this.width,this.y,true));
+        const bottom = shape.isCollideWith(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true));
+        const left = shape.isCollideWith(new Line(this.x,this.y,this.x,this.y+this.height,true));
+        const right = shape.isCollideWith(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height,true));
+
+        const points = [];
+
+        if(top) points.push(...top);
+        if(left) points.push(...left);
+        if(right) points.push(...right);
+        if(bottom) points.push(...bottom);
+
+        if(points.length > 0)
+            return points;
+        
         return null;
     }
 
     static RectTriangle(this:Rect, shape:Triangle):Point[]|null{
+        const top = shape.isCollideWith(new Line(this.x,this.y,this.x+this.width,this.y,true));
+        const bottom = shape.isCollideWith(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true));
+        const left = shape.isCollideWith(new Line(this.x,this.y,this.x,this.y+this.height,true));
+        const right = shape.isCollideWith(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height,true));
+
+        const points = [];
+
+        if(top) points.push(...top);
+        if(left) points.push(...left);
+        if(right) points.push(...right);
+        if(bottom) points.push(...bottom);
+
+        if(points.length > 0)
+            return points;
+
         return null;
     }
 
+    //todo: fix circle circle collision
     static CircleCircle(this:Circle, shape:Circle):Point[]|null{
-        return null;
-    }
+        const dx = shape.x - this.x;
+        const dy = shape.y - this.y;
+        const distance = Math.sqrt(dx ** 2 + dy ** 2);
+        if (distance <= this.radius + shape.radius) {
+            
+            const collisionPoints = [];
+            if (distance === 0 && this.radius === shape.radius) {
+                collisionPoints.push(new Point(this.x, this.y ));
+            } else {
+                const collisionAngle = Math.atan2(dy, dx);
+                const collisionDist = (this.radius + shape.radius - distance) / 2;
+                collisionPoints.push(new Point(this.x + (this.radius - collisionDist) * Math.cos(collisionAngle),this.y + (this.radius - collisionDist) * Math.sin(collisionAngle),true));
+                collisionPoints.push(new Point(shape.x + (shape.radius - collisionDist) * Math.cos(collisionAngle + Math.PI),shape.y + (shape.radius - collisionDist) * Math.sin(collisionAngle + Math.PI),true));
+            }
 
-    static CircleRect(this:Circle, shape:Rect):Point[]|null{
+            return collisionPoints;
+        }
+
         return null;
     }
 
@@ -234,6 +280,19 @@ export default class Collision {
     }
 
     static TriangleTriangle(this:Triangle, shape:Triangle):Point[]|null{
+        const line1 = shape.isCollideWith(new Line(this.p1.x,this.p1.y,this.p2.x,this.p2.y,true));
+        const line2 = shape.isCollideWith(new Line(this.p2.x,this.p2.y,this.p3.x,this.p3.y,true));
+        const line3 = shape.isCollideWith(new Line(this.p3.x,this.p3.y,this.p1.x,this.p1.y,true));
+
+        const points = [];
+
+        if(line1) points.push(...line1);
+        if(line2) points.push(...line2);
+        if(line3) points.push(...line3);
+
+        if(points.length > 0)
+            return points;
+
         return null;
     }
 
