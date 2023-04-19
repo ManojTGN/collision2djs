@@ -6,7 +6,7 @@ import { Triangle } from "./shape/triangle";
 
 export interface TEvent {
     shape:(Point|Line|Rect|Circle|Triangle),
-    points:Point[]
+    points:Point[]|boolean
 }
 
 export class Shapes{

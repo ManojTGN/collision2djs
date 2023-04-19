@@ -52,7 +52,7 @@ export class Line{
     }
     get p2():Point{return this.point2;}
 
-    isCollideWith( shape: Point|Line|Rect|Circle|Triangle):Point[]|null{
+    isCollideWith( shape: Point|Line|Rect|Circle|Triangle):Point[]|boolean|null{
         if(shape instanceof Line)
             return Collision.LineLine.bind(this,shape)()
 

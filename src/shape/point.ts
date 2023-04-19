@@ -13,7 +13,7 @@ export class Point{
     onCollisionEnter: ((event:TEvent[])=>void)|null;
     onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
 
-    isCollideWith( shape: this|Line|Rect|Circle|Triangle ):Point[]|null{
+    isCollideWith( shape: this|Line|Rect|Circle|Triangle ):boolean|null{
         if(shape instanceof Line)
             return Collision.PointLine.bind(this,shape)()
 

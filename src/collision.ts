@@ -6,59 +6,57 @@ import { Triangle } from "./shape/triangle";
 
 export default class Collision {
 
-    static PointPoint(this:Point, shape:Point):Point[]|null{
+    static PointPoint(this:Point, shape:Point):boolean{
 
-        if(this.x == shape.x && this.y == shape.y){
-            return [this];
-        }
+        return this.x == shape.x && this.y == shape.y
 
-        return null;
     }
 
-    static PointLine(this:Point, shape:Line):Point[]|null{
+    static PointLine(this:Point, shape:Line):boolean{
         const slope = (shape.point2.y - shape.point1.y) / (shape.point2.x - shape.point1.x);
             
         const yIntercept = shape.point1.y - slope * shape.point1.x;
         const expectedY = slope * this.x + yIntercept;
         
         if( Math.abs(expectedY - this.y) < 0.0001 ){
-            return [new Point(this.x,this.y,true)];
+            return true;
+            // return [new Point(this.x,this.y,true)]; <- for point
         }
 
-        return null;
+        return false;
     }
 
-    static PointRect(this:Point, shape:Rect):Point[]|null{
+    static PointRect(this:Point, shape:Rect):boolean{
         if(
             this.x >= shape.x && this.x <= shape.x + shape.width &&
             this.y >= shape.y && this.y <= shape.y + shape.height 
         ){
-            return [this];
+            return true;
         }
 
-        return null;
+        return false;
     }
 
-    static PointCircle(this:Point, shape:Circle):Point[]|null{
+    static PointCircle(this:Point, shape:Circle):boolean{
         const distance = Math.sqrt(Math.pow(shape.x - this.x, 2) + Math.pow(shape.y - this.y, 2));
         if(distance <= shape.radius){
-            return [this];
+            return true;
         }
 
-        return null;
+        return false;
     }             
 
-    static PointTriangle(this:Point, shape:Triangle):Point[]|null{
+    static PointTriangle(this:Point, shape:Triangle):boolean{
         const area  = Math.abs((shape.point2.x - shape.point1.x) * (shape.point3.y - shape.point1.y) - (shape.point3.x - shape.point1.x) * (shape.point2.y - shape.point1.y));
         const area1 = Math.abs((shape.point1.x - this.x) * (shape.point2.y - this.y) - (shape.point2.x - this.x) * (shape.point1.y - this.y));
         const area2 = Math.abs((shape.point2.x - this.x) * (shape.point3.y - this.y) - (shape.point3.x - this.x) * (shape.point2.y - this.y));
         const area3 = Math.abs((shape.point3.x - this.x) * (shape.point1.y - this.y) - (shape.point1.x - this.x) * (shape.point3.y - this.y));
         
         if(area === area1 + area2 + area3){
-            return [this];
+            return true;
         }
 
-        return null;
+        return false;
     }
 
     static LineLine(this:Line, shape:Line):Point[]|null{
@@ -88,28 +86,28 @@ export default class Collision {
         const topIntersection = this.isCollideWith( 
             new Line( shape.x, shape.y, shape.x + shape.width, shape.y, true)
         );
-        if (topIntersection != null) {
+        if (topIntersection != null && topIntersection instanceof Array) {
             points.push(...topIntersection);
         }
         
         const rightIntersection = this.isCollideWith(
             new Line(shape.x + shape.width, shape.y, shape.x + shape.width, shape.y + shape.height, true )
         );
-        if (rightIntersection != null) {
+        if (rightIntersection != null && rightIntersection instanceof Array) {
             points.push(...rightIntersection);
         }
         
         const bottomIntersection = this.isCollideWith(
             new Line(shape.x, shape.y + shape.height, shape.x + shape.width, shape.y + shape.height, true)
         );
-        if (bottomIntersection != null) {
+        if (bottomIntersection != null && bottomIntersection instanceof Array) {
             points.push(...bottomIntersection);
         }
         
         const leftIntersection = this.isCollideWith( 
             new Line(shape.x, shape.y, shape.x, shape.y + shape.height, true)
         );
-        if (leftIntersection != null) {
+        if (leftIntersection != null && leftIntersection instanceof Array) {
             points.push(...leftIntersection);
         }
 
@@ -174,21 +172,21 @@ export default class Collision {
         const topIntersection = this.isCollideWith( 
             new Line( shape.p1.x, shape.p1.y, shape.p2.x, shape.p2.y, true)
         );
-        if (topIntersection != null) {
+        if (topIntersection != null && topIntersection instanceof Array) {
             points.push(...topIntersection);
         }
 
         const rightIntersection = this.isCollideWith(
             new Line(shape.p2.x, shape.p2.y, shape.p3.x, shape.p3.y, true )
         );
-        if (rightIntersection != null) {
+        if (rightIntersection != null && rightIntersection instanceof Array) {
             points.push(...rightIntersection);
         }
         
         const bottomIntersection = this.isCollideWith(
             new Line(shape.p3.x, shape.p3.y, shape.p1.x, shape.p1.y, true)
         );
-        if (bottomIntersection != null) {
+        if (bottomIntersection != null && bottomIntersection instanceof Array) {
             points.push(...bottomIntersection);
         }
 
@@ -222,10 +220,10 @@ export default class Collision {
 
         const points = [];
 
-        if(top) points.push(...top);
-        if(left) points.push(...left);
-        if(right) points.push(...right);
-        if(bottom) points.push(...bottom);
+        if(top != null && top instanceof Array) points.push(...top);
+        if(left != null && left instanceof Array) points.push(...left);
+        if(right != null && right instanceof Array) points.push(...right);
+        if(bottom != null && bottom instanceof Array) points.push(...bottom);
 
         if(points.length > 0)
             return points;
@@ -241,10 +239,10 @@ export default class Collision {
 
         const points = [];
 
-        if(top) points.push(...top);
-        if(left) points.push(...left);
-        if(right) points.push(...right);
-        if(bottom) points.push(...bottom);
+        if(top != null && top instanceof Array) points.push(...top);
+        if(left != null && left instanceof Array) points.push(...left);
+        if(right != null && right instanceof Array) points.push(...right);
+        if(bottom != null && bottom instanceof Array) points.push(...bottom);
 
         if(points.length > 0)
             return points;
@@ -276,6 +274,19 @@ export default class Collision {
     }
 
     static CircleTriangle(this:Circle, shape:Triangle):Point[]|null{
+        const line1 = this.isCollideWith(new Line(shape.p1.x,shape.p1.y,shape.p2.x,shape.p2.y,true));
+        const line2 = this.isCollideWith(new Line(shape.p2.x,shape.p2.y,shape.p3.x,shape.p3.y,true));
+        const line3 = this.isCollideWith(new Line(shape.p3.x,shape.p3.y,shape.p1.x,shape.p1.y,true));
+
+        const points = [];
+
+        if(line1 != null && line1 instanceof Array) points.push(...line1);
+        if(line2 != null && line2 instanceof Array) points.push(...line2);
+        if(line3 != null && line3 instanceof Array) points.push(...line3);
+
+        if(points.length > 0)
+            return points;
+
         return null;
     }
 
@@ -286,9 +297,9 @@ export default class Collision {
 
         const points = [];
 
-        if(line1) points.push(...line1);
-        if(line2) points.push(...line2);
-        if(line3) points.push(...line3);
+        if(line1 != null && line1 instanceof Array) points.push(...line1);
+        if(line2 != null && line2 instanceof Array) points.push(...line2);
+        if(line3 != null && line3 instanceof Array) points.push(...line3);
 
         if(points.length > 0)
             return points;
