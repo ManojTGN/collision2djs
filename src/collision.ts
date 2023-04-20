@@ -120,47 +120,40 @@ export default class Collision {
     //todo: fix line circle collision
     static LineCircle(this:Line, shape:Circle):Point[]|null{
         
-        const points = [];
-
-        const dx = this.point2.x - this.point1.x;
-        const dy = this.point2.y - this.point1.y;
-        const dr = Math.sqrt(dx * dx + dy * dy);
-        const D = this.point1.x * this.point2.y - this.point2.x * this.point1.y;
-
-        const discriminant = shape.radius * shape.radius * dr * dr - D * D;
-        if (discriminant < 0) {
-            return null;
+        function distanceBetweenPoints(x1:number, y1:number, x2:number, y2:number) {
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            return Math.sqrt(dx * dx + dy * dy);
+        }
+        
+        function clamp(value:number, min:number, max:number) {
+            return Math.max(min, Math.min(max, value));
         }
 
-        const xPlusMinus = Math.sqrt(discriminant) * dy / (dr * dr);
-        const yPlusMinus = Math.sqrt(discriminant) * -dx / (dr * dr);
-
-        const intersection1 = new Point(
-            (D * dy + Math.sign(dy) * dx * xPlusMinus) / (dr * dr),
-            (-D * dx + Math.abs(dy) * yPlusMinus) / (dr * dr),
-            true
-        );
-        const intersection2 = new Point(
-            (D * dy - Math.sign(dy) * dx * xPlusMinus) / (dr * dr),
-            (-D * dx - Math.abs(dy) * yPlusMinus) / (dr * dr),
-            true
-        );
-
-        if ((intersection1.x >= Math.min(this.point1.x, this.point2.x) && intersection1.x <= Math.max(this.point1.x, this.point2.x)) &&
-            (intersection1.y >= Math.min(this.point1.y, this.point2.y) && intersection1.y <= Math.max(this.point1.y, this.point2.y)) &&
-            ((intersection1.x - shape.x) * (intersection1.x - shape.x) + (intersection1.y - shape.y) * (intersection1.y - shape.y) <= shape.radius * shape.radius)) {
-            points.push(intersection1);
+        const dx = this.x2 - this.x1;
+        const dy = this.y2 - this.y1;
+        const l2 = dx * dx + dy * dy;
+        const t = ((shape.x - this.x1) * dx + (shape.y - this.y1) * dy) / l2;
+        const nearestX = clamp(this.x1 + t * dx, Math.min(this.x1, this.x2), Math.max(this.x1, this.x2));
+        const nearestY = clamp(this.y1 + t * dy, Math.min(this.y1, this.y2), Math.max(this.y1, this.y2));
+        
+        const distance = distanceBetweenPoints(nearestX, nearestY, shape.x, shape.y);
+        
+        if (distance <= shape.radius) {
+            
+            const d = Math.sqrt(shape.radius * shape.radius - distance * distance);
+            const collisionPoints = [];
+        
+            if (t >= 0 && t <= 1) {
+                collisionPoints.push(new Point(nearestX - d * dy / Math.sqrt(l2), nearestY + d * dx / Math.sqrt(l2), true ));
+                collisionPoints.push(new Point( nearestX + d * dy / Math.sqrt(l2), nearestY - d * dx / Math.sqrt(l2), true ));
+            } else {
+                collisionPoints.push(new Point(nearestX, nearestY, true));
+            }
+        
+            return collisionPoints;
         }
-
-        if ((intersection2.x >= Math.min(this.point1.x, this.point2.x) && intersection2.x <= Math.max(this.point1.x, this.point2.x)) &&
-            (intersection2.y >= Math.min(this.point1.y, this.point2.y) && intersection2.y <= Math.max(this.point1.y, this.point2.y)) &&
-            ((intersection2.x - shape.x) * (intersection2.x - shape.x) + (intersection2.y - shape.y) * (intersection2.y - shape.y) <= shape.radius * shape.radius)) {
-            points.push(intersection2);
-        }
-
-        if(points.length > 0)
-            return points;
-
+        
         return null;
 
     }
@@ -197,21 +190,25 @@ export default class Collision {
 
     }
 
-    //todo: fix rect rect collision
     static RectRect(this:Rect, shape:Rect):Point[]|null{
-        const left = Math.max(this.x, shape.x);
-        const top = Math.max(this.y, shape.y);
-        const right = Math.min(this.x + this.width, shape.x + shape.width);
-        const bottom = Math.min(this.y + this.height, shape.y + shape.height);
-        const width = right - left;
-        const height = bottom - top;
-        if (width > 0 && height > 0) {
-            return [new Point(left, top, true), new Point(right, bottom, true) ];
-        }
+        const top = shape.isCollideWith(new Line(this.x,this.y,this.x+this.width,this.y,true));
+        const bottom = shape.isCollideWith(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true));
+        const left = shape.isCollideWith(new Line(this.x,this.y,this.x,this.y+this.height,true));
+        const right = shape.isCollideWith(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height,true));
+
+        const points = [];
+
+        if(top != null && top instanceof Array) points.push(...top);
+        if(left != null && left instanceof Array) points.push(...left);
+        if(right != null && right instanceof Array) points.push(...right);
+        if(bottom != null && bottom instanceof Array) points.push(...bottom);
+
+        if(points.length > 0)
+            return points;
+
         return null;
     }
 
-    //todo: fix line circle collision
     static RectCircle(this:Rect, shape:Circle):Point[]|null{
         const top = shape.isCollideWith(new Line(this.x,this.y,this.x+this.width,this.y,true));
         const bottom = shape.isCollideWith(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true));
