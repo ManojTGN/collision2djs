@@ -22,7 +22,10 @@ export class Shapes{
 
     static remove(element:Point|Line|Rect|Circle|Triangle):void{
         if(!element) return;
-        Shapes.SHAPES.filter((shape)=>element != shape);
+        const index = Shapes.SHAPES.indexOf(element);
+
+        if(index !== -1)
+            Shapes.SHAPES.splice(index,1);
     }
 
     static collision(element:Point|Line|Rect|Circle|Triangle){
