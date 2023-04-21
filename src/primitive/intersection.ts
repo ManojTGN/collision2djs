@@ -1,13 +1,12 @@
-import { Circle } from "./shape/circle";
-import { Line } from "./shape/line";
-import { Point } from "./shape/point";
-import { Rect } from "./shape/rect";
-import { Triangle } from "./shape/triangle";
+import { Circle } from "../shape/circle";
+import { Line } from "../shape/line";
+import { Point } from "../shape/point";
+import { Rect } from "../shape/rect";
+import { Triangle } from "../shape/triangle";
 
-export default class Collision {
+export default class Intersection {
 
     static PointPoint(this:Point, shape:Point):Point|null{
-
         if(this.x == shape.x && this.y == shape.y)
             return new Point(this.x, this.y, true);
 

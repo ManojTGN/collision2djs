@@ -1,5 +1,5 @@
-import Collision from "../collision";
-import {Shapes, TEvent} from "../shapes";
+import Intersection from "../primitive/intersection";
+import {Shapes, TEvent} from "../primitive/shapes";
 import { Circle } from "./circle";
 import { Point } from "./point";
 import { Rect } from "./rect";
@@ -58,19 +58,19 @@ export class Line{
 
     getIntersection( shape: Point|Line|Rect|Circle|Triangle):Point[]|Point|null{
         if(shape instanceof Line)
-            return Collision.LineLine.bind(this,shape)()
+            return Intersection.LineLine.bind(this,shape)()
 
         if(shape instanceof Point)
-            return Collision.PointLine.bind(shape,this)()
+            return Intersection.PointLine.bind(shape,this)()
         
         if(shape instanceof Rect)
-            return Collision.LineRect.bind(this,shape)()
+            return Intersection.LineRect.bind(this,shape)()
         
         if(shape instanceof Circle)
-            return Collision.LineCircle.bind(this,shape)()
+            return Intersection.LineCircle.bind(this,shape)()
 
         if(shape instanceof Triangle)
-            return Collision.LineTriangle.bind(this,shape)()
+            return Intersection.LineTriangle.bind(this,shape)()
 
         return null;
     }

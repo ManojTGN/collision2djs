@@ -1,8 +1,8 @@
-import { Circle } from "./shape/circle";
-import { Line } from "./shape/line";
-import { Point } from "./shape/point";
-import { Rect } from "./shape/rect";
-import { Triangle } from "./shape/triangle";
+import { Circle } from "../shape/circle";
+import { Line } from "../shape/line";
+import { Point } from "../shape/point";
+import { Rect } from "../shape/rect";
+import { Triangle } from "../shape/triangle";
 
 export interface TEvent {
     shape:(Point|Line|Rect|Circle|Triangle),

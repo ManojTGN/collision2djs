@@ -1,0 +1,1 @@
+//todo: collision detection: return only boolean type
