@@ -8,7 +8,7 @@ export default class Intersection {
 
     static PointPoint(this:Point, shape:Point):Point|null{
         if(this.x == shape.x && this.y == shape.y)
-            return new Point(this.x, this.y, true);
+            return new Point(this.x, this.y);
 
         return null;
     }
@@ -20,7 +20,7 @@ export default class Intersection {
         const expectedY = slope * this.x + yIntercept;
         
         if( Math.abs(expectedY - this.y) < 0.0001 ){
-            return new Point(this.x,this.y,true);
+            return new Point(this.x,this.y);
         }
 
         return null;
@@ -31,7 +31,7 @@ export default class Intersection {
             this.x >= shape.x && this.x <= shape.x + shape.width &&
             this.y >= shape.y && this.y <= shape.y + shape.height 
         ){
-            return new Point(this.x,this.y,true);
+            return new Point(this.x,this.y);
         }
 
         return null;
@@ -40,7 +40,7 @@ export default class Intersection {
     static PointCircle(this:Point, shape:Circle):Point|null{
         const distance = Math.sqrt(Math.pow(shape.x - this.x, 2) + Math.pow(shape.y - this.y, 2));
         if(distance <= shape.radius){
-            return new Point(this.x,this.y,true);
+            return new Point(this.x,this.y);
         }
 
         return null;
@@ -53,7 +53,7 @@ export default class Intersection {
         const area3 = Math.abs((shape.point3.x - this.x) * (shape.point1.y - this.y) - (shape.point1.x - this.x) * (shape.point3.y - this.y));
         
         if(area === area1 + area2 + area3){
-            return new Point(this.x,this.y,true);
+            return new Point(this.x,this.y);
         }
 
         return null;
@@ -73,7 +73,7 @@ export default class Intersection {
         if (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1) {
             const x = this.point1.x + ua * (this.point2.x - this.point1.x);
             const y = this.point1.y + ua * (this.point2.y - this.point1.y);
-            return [ new Point(x, y, true) ];
+            return [ new Point(x, y) ];
         }
 
         return null;
@@ -84,28 +84,28 @@ export default class Intersection {
         const points = [];
 
         const topIntersection = this.getIntersection( 
-            new Line( shape.x, shape.y, shape.x + shape.width, shape.y, true)
+            new Line( shape.x, shape.y, shape.x + shape.width, shape.y)
         );
         if (topIntersection != null && topIntersection instanceof Array) {
             points.push(...topIntersection);
         }
         
         const rightIntersection = this.getIntersection(
-            new Line(shape.x + shape.width, shape.y, shape.x + shape.width, shape.y + shape.height, true )
+            new Line(shape.x + shape.width, shape.y, shape.x + shape.width, shape.y + shape.height )
         );
         if (rightIntersection != null && rightIntersection instanceof Array) {
             points.push(...rightIntersection);
         }
         
         const bottomIntersection = this.getIntersection(
-            new Line(shape.x, shape.y + shape.height, shape.x + shape.width, shape.y + shape.height, true)
+            new Line(shape.x, shape.y + shape.height, shape.x + shape.width, shape.y + shape.height )
         );
         if (bottomIntersection != null && bottomIntersection instanceof Array) {
             points.push(...bottomIntersection);
         }
         
         const leftIntersection = this.getIntersection( 
-            new Line(shape.x, shape.y, shape.x, shape.y + shape.height, true)
+            new Line(shape.x, shape.y, shape.x, shape.y + shape.height )
         );
         if (leftIntersection != null && leftIntersection instanceof Array) {
             points.push(...leftIntersection);
@@ -142,7 +142,7 @@ export default class Intersection {
             if (x < minX || x > maxX) {
                 return null;
             }
-            return [new Point(x, y, true)];
+            return [new Point(x, y)];
         }
         else {
             let x1 = (-b1 + Math.sqrt(discriminant)) / (2 * a);
@@ -152,10 +152,10 @@ export default class Intersection {
 
             let intersections = [];
             if (x1 >= minX && x1 <= maxX) {
-                intersections.push(new Point(x1, y1, true));
+                intersections.push(new Point(x1, y1));
             }
             if (x2 >= minX && x2 <= maxX) {
-                intersections.push(new Point(x2, y2, true));
+                intersections.push(new Point(x2, y2));
             }
 
             return intersections;
@@ -168,21 +168,21 @@ export default class Intersection {
         const points = [];
 
         const topIntersection = this.getIntersection( 
-            new Line( shape.p1.x, shape.p1.y, shape.p2.x, shape.p2.y, true)
+            new Line( shape.p1.x, shape.p1.y, shape.p2.x, shape.p2.y)
         );
         if (topIntersection != null && topIntersection instanceof Array) {
             points.push(...topIntersection);
         }
 
         const rightIntersection = this.getIntersection(
-            new Line(shape.p2.x, shape.p2.y, shape.p3.x, shape.p3.y, true )
+            new Line(shape.p2.x, shape.p2.y, shape.p3.x, shape.p3.y )
         );
         if (rightIntersection != null && rightIntersection instanceof Array) {
             points.push(...rightIntersection);
         }
         
         const bottomIntersection = this.getIntersection(
-            new Line(shape.p3.x, shape.p3.y, shape.p1.x, shape.p1.y, true)
+            new Line(shape.p3.x, shape.p3.y, shape.p1.x, shape.p1.y)
         );
         if (bottomIntersection != null && bottomIntersection instanceof Array) {
             points.push(...bottomIntersection);
@@ -196,10 +196,10 @@ export default class Intersection {
     }
 
     static RectRect(this:Rect, shape:Rect):Point[]|null{
-        const top = shape.getIntersection(new Line(this.x,this.y,this.x+this.width,this.y,true));
-        const bottom = shape.getIntersection(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true));
-        const left = shape.getIntersection(new Line(this.x,this.y,this.x,this.y+this.height,true));
-        const right = shape.getIntersection(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height,true));
+        const top = shape.getIntersection(new Line(this.x,this.y,this.x+this.width,this.y));
+        const bottom = shape.getIntersection(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height));
+        const left = shape.getIntersection(new Line(this.x,this.y,this.x,this.y+this.height));
+        const right = shape.getIntersection(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height));
 
         const points = [];
 
@@ -215,10 +215,10 @@ export default class Intersection {
     }
 
     static RectCircle(this:Rect, shape:Circle):Point[]|null{
-        const top = shape.getIntersection(new Line(this.x,this.y,this.x+this.width,this.y,true));
-        const bottom = shape.getIntersection(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true));
-        const left = shape.getIntersection(new Line(this.x,this.y,this.x,this.y+this.height,true));
-        const right = shape.getIntersection(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height,true));
+        const top = shape.getIntersection(new Line(this.x,this.y,this.x+this.width,this.y));
+        const bottom = shape.getIntersection(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height));
+        const left = shape.getIntersection(new Line(this.x,this.y,this.x,this.y+this.height));
+        const right = shape.getIntersection(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height));
 
         const points = [];
 
@@ -234,10 +234,10 @@ export default class Intersection {
     }
 
     static RectTriangle(this:Rect, shape:Triangle):Point[]|null{
-        const top = shape.getIntersection(new Line(this.x,this.y,this.x+this.width,this.y,true));
-        const bottom = shape.getIntersection(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true));
-        const left = shape.getIntersection(new Line(this.x,this.y,this.x,this.y+this.height,true));
-        const right = shape.getIntersection(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height,true));
+        const top = shape.getIntersection(new Line(this.x,this.y,this.x+this.width,this.y));
+        const bottom = shape.getIntersection(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height));
+        const left = shape.getIntersection(new Line(this.x,this.y,this.x,this.y+this.height));
+        const right = shape.getIntersection(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height));
 
         const points = [];
 
@@ -273,14 +273,14 @@ export default class Intersection {
             let x5 = x3 - h * (shape.y - this.y) / d;
             let y5 = y3 + h * (shape.x - this.x) / d;
             
-            return [new Point(x4, y4, true), new Point(x5, y5, true)];
+            return [new Point(x4, y4), new Point(x5, y5)];
         }
     }
 
     static CircleTriangle(this:Circle, shape:Triangle):Point[]|null{
-        const line1 = this.getIntersection(new Line(shape.p1.x,shape.p1.y,shape.p2.x,shape.p2.y,true));
-        const line2 = this.getIntersection(new Line(shape.p2.x,shape.p2.y,shape.p3.x,shape.p3.y,true));
-        const line3 = this.getIntersection(new Line(shape.p3.x,shape.p3.y,shape.p1.x,shape.p1.y,true));
+        const line1 = this.getIntersection(new Line(shape.p1.x,shape.p1.y,shape.p2.x,shape.p2.y));
+        const line2 = this.getIntersection(new Line(shape.p2.x,shape.p2.y,shape.p3.x,shape.p3.y));
+        const line3 = this.getIntersection(new Line(shape.p3.x,shape.p3.y,shape.p1.x,shape.p1.y));
 
         const points = [];
 
@@ -295,9 +295,9 @@ export default class Intersection {
     }
     
     static TriangleTriangle(this:Triangle, shape:Triangle):Point[]|null{
-        const line1 = shape.getIntersection(new Line(this.p1.x,this.p1.y,this.p2.x,this.p2.y,true));
-        const line2 = shape.getIntersection(new Line(this.p2.x,this.p2.y,this.p3.x,this.p3.y,true));
-        const line3 = shape.getIntersection(new Line(this.p3.x,this.p3.y,this.p1.x,this.p1.y,true));
+        const line1 = shape.getIntersection(new Line(this.p1.x,this.p1.y,this.p2.x,this.p2.y));
+        const line2 = shape.getIntersection(new Line(this.p2.x,this.p2.y,this.p3.x,this.p3.y));
+        const line3 = shape.getIntersection(new Line(this.p3.x,this.p3.y,this.p1.x,this.p1.y));
 
         const points = [];
 

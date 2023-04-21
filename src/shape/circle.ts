@@ -57,14 +57,12 @@ export class Circle{
     }
 
     constructor(x:number,y:number,radius:number){
-        this.point = new Point(x,y,true);
+        this.point = new Point(x,y);
         this.r = radius;
         this.onTrigger = true;
         this.collisionWith = new Map();
         this.onCollisionEnter = null;
         this.onCollisionExit = null;
-
-        Shapes.add(this);
     }
 
 }

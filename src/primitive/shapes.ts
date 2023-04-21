@@ -14,19 +14,26 @@ export class Shapes{
     static SHAPES:(Point|Line|Rect|Circle|Triangle)[] = [];
     
     static add(element:Point|Line|Rect|Circle|Triangle):void{
+        if(!element) return;
+
         Shapes.SHAPES.push(element);
         Shapes.collision(element);
     }
 
     static remove(element:Point|Line|Rect|Circle|Triangle):void{
+        if(!element) return;
         Shapes.SHAPES.filter((shape)=>element != shape);
     }
 
     static collision(element:Point|Line|Rect|Circle|Triangle){
+        if(Shapes.SHAPES.indexOf(element) == -1) return;
+
         let onEnterEvent:Map<(Point|Line|Rect|Circle|Triangle),TEvent[]> = new Map();
         let onExitEvent:Map<(Point|Line|Rect|Circle|Triangle),TEvent[]>  = new Map();
 
         Shapes.SHAPES.forEach( (shape) => {
+            if(element == shape) return;
+
             let events:TEvent[]|undefined;
             
             let prevState = shape.collisionWith.get(element);

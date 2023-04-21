@@ -64,15 +64,13 @@ export class Rect{
     }
 
     constructor(x:number, y:number, width:number, height:number = width){
-        this.point = new Point(x,y,true);
+        this.point = new Point(x,y);
         this.w = width;
         this.h = height;
         this.onTrigger = true;
         this.collisionWith = new Map();
         this.onCollisionEnter = null;
         this.onCollisionExit = null;
-
-        Shapes.add(this);
     }
 
 };

@@ -60,15 +60,13 @@ export class Triangle{
     }
 
     constructor(x1:number,y1:number,x2:number,y2:number,x3:number,y3:number){
-        this.point1 = new Point(x1,y1,true);
-        this.point2 = new Point(x2,y2,true);
-        this.point3 = new Point(x3,y3,true);
+        this.point1 = new Point(x1,y1);
+        this.point2 = new Point(x2,y2);
+        this.point3 = new Point(x3,y3);
         this.onTrigger = true;
         this.collisionWith = new Map();
         this.onCollisionEnter = null;
         this.onCollisionExit = null;
-
-        Shapes.add(this);
     }
 
 }

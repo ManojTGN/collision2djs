@@ -170,29 +170,29 @@ export default class Collision {
     }
 
     static LineTriangle(this:Line, shape:Triangle):boolean{
-        if(Collision.LineLine.bind(this,new Line(shape.p1.x,shape.p1.y,shape.p2.x,shape.p2.y,true) )())
+        if(Collision.LineLine.bind(this,new Line(shape.p1.x,shape.p1.y,shape.p2.x,shape.p2.y) )())
             return true;
     
-        if(Collision.LineLine.bind(this,new Line(shape.p2.x,shape.p2.y,shape.p3.x,shape.p3.y,true) )())
+        if(Collision.LineLine.bind(this,new Line(shape.p2.x,shape.p2.y,shape.p3.x,shape.p3.y) )())
             return true;
         
-        if(Collision.LineLine.bind(this,new Line(shape.p3.x,shape.p3.y,shape.p1.x,shape.p1.y,true) )())
+        if(Collision.LineLine.bind(this,new Line(shape.p3.x,shape.p3.y,shape.p1.x,shape.p1.y) )())
             return true;
         
         return false;
     }
 
     static RectRect(this:Rect, shape:Rect):boolean{
-        if(Collision.LineRect.bind(new Line(this.x,this.y,this.x+this.width,this.y,true),this)())
+        if(Collision.LineRect.bind(new Line(this.x,this.y,this.x+this.width,this.y),this)())
             return true;
 
-        if(Collision.LineRect.bind(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true),this)())
+        if(Collision.LineRect.bind(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height),this)())
             return true;
         
-        if(Collision.LineRect.bind(new Line(this.x,this.y,this.x,this.y+this.height,true),this)())
+        if(Collision.LineRect.bind(new Line(this.x,this.y,this.x,this.y+this.height),this)())
             return true;
 
-        if(Collision.LineRect.bind(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height,true),this)())
+        if(Collision.LineRect.bind(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height),this)())
             return true;
 
         return false;
@@ -209,16 +209,16 @@ export default class Collision {
     }
 
     static RectTriangle(this:Rect, shape:Triangle):boolean{
-        if(Collision.LineTriangle.bind(new Line(this.x,this.y,this.x+this.width,this.y,true),shape)())
+        if(Collision.LineTriangle.bind(new Line(this.x,this.y,this.x+this.width,this.y),shape)())
             return true;
 
-        if(Collision.LineTriangle.bind(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height,true),shape)())
+        if(Collision.LineTriangle.bind(new Line(this.x,this.y+this.height,this.x+this.width,this.y+this.height),shape)())
             return true;
         
-        if(Collision.LineTriangle.bind(new Line(this.x,this.y,this.x,this.y+this.height,true),shape)())
+        if(Collision.LineTriangle.bind(new Line(this.x,this.y,this.x,this.y+this.height),shape)())
             return true;
         
-        if(Collision.LineTriangle.bind(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height,true),shape)())
+        if(Collision.LineTriangle.bind(new Line(this.x + this.width,this.y,this.x + this.width,this.y+this.height),shape)())
             return true;
 
         return false;
@@ -236,26 +236,26 @@ export default class Collision {
     }
 
     static CircleTriangle(this:Circle, shape:Triangle):boolean{
-        if(Collision.LineCircle.bind(new Line(shape.p1.x,shape.p1.y,shape.p2.x,shape.p2.y,true),this)())
+        if(Collision.LineCircle.bind(new Line(shape.p1.x,shape.p1.y,shape.p2.x,shape.p2.y),this)())
             return true;
         
-        if(Collision.LineCircle.bind(new Line(shape.p2.x,shape.p2.y,shape.p3.x,shape.p3.y,true),this)())
+        if(Collision.LineCircle.bind(new Line(shape.p2.x,shape.p2.y,shape.p3.x,shape.p3.y),this)())
             return true;
         
-        if(Collision.LineCircle.bind(new Line(shape.p3.x,shape.p3.y,shape.p1.x,shape.p1.y,true),this)())
+        if(Collision.LineCircle.bind(new Line(shape.p3.x,shape.p3.y,shape.p1.x,shape.p1.y),this)())
             return true;
         
         return false;
     }
     
     static TriangleTriangle(this:Triangle, shape:Triangle):boolean{
-        if(Collision.LineTriangle.bind(new Line(this.p1.x,this.p1.y,this.p2.x,this.p2.y,true),this)())
+        if(Collision.LineTriangle.bind(new Line(this.p1.x,this.p1.y,this.p2.x,this.p2.y),this)())
             return true;
         
-        if(Collision.LineTriangle.bind(new Line(this.p2.x,this.p2.y,this.p3.x,this.p3.y,true),this)())
+        if(Collision.LineTriangle.bind(new Line(this.p2.x,this.p2.y,this.p3.x,this.p3.y),this)())
             return true;
         
-        if(Collision.LineTriangle.bind(new Line(this.p3.x,this.p3.y,this.p1.x,this.p1.y,true),this)())
+        if(Collision.LineTriangle.bind(new Line(this.p3.x,this.p3.y,this.p1.x,this.p1.y),this)())
             return true;
         
         return false;

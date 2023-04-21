@@ -36,16 +36,13 @@ export class Point{
         return null;
     }
 
-    constructor(x:number,y:number,reference?:boolean){
+    constructor(x:number,y:number){
         this.x = x;
         this.y = y;
         this.onTrigger = true;
         this.collisionWith = new Map();
         this.onCollisionEnter = null;
         this.onCollisionExit = null;
-
-        if(!reference)
-        Shapes.add(this);
     }
 
 }
