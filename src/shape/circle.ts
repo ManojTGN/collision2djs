@@ -32,8 +32,11 @@ export class Circle{
     }
     get radius():number{return this.r;}
 
+    isCollideWith( shape:this|Line|Rect|Circle|Triangle ):boolean{
+        return this.collisionWith.get(shape)?true:false
+    }
 
-    isCollideWith( shape: Point|Line|Rect|this|Triangle ):Point[]|boolean|null{
+    getIntersection( shape: Point|Line|Rect|this|Triangle ):Point[]|boolean|null{
         if(shape instanceof Line)
             return Collision.LineCircle.bind(shape,this)()
 

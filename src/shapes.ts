@@ -33,7 +33,7 @@ export class Shapes{
             if( shape == element ) return;
 
             let prevCollision = element.collisionWith.get(shape);
-            let points = shape.isCollideWith(element);
+            let points = shape.getIntersection(element);
 
             if(points == null && prevCollision == true){ // EXIT
                 let arr = Ex_Events.get(element);

@@ -39,7 +39,11 @@ export class Rect{
     }
     get height():number{return this.h;}
 
-    isCollideWith( shape: Point|Line|this|Circle|Triangle ):Point[]|boolean|null{
+    isCollideWith( shape:this|Line|Rect|Circle|Triangle ):boolean{
+        return this.collisionWith.get(shape)?true:false
+    }
+
+    getIntersection( shape: Point|Line|this|Circle|Triangle ):Point[]|boolean|null{
         if(shape instanceof Line)
             return Collision.LineRect.bind(shape,this)()
 
