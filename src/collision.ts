@@ -6,57 +6,58 @@ import { Triangle } from "./shape/triangle";
 
 export default class Collision {
 
-    static PointPoint(this:Point, shape:Point):boolean{
+    static PointPoint(this:Point, shape:Point):Point|null{
 
-        return this.x == shape.x && this.y == shape.y
+        if(this.x == shape.x && this.y == shape.y)
+            return new Point(this.x, this.y, true);
 
+        return null;
     }
 
-    static PointLine(this:Point, shape:Line):boolean{
+    static PointLine(this:Point, shape:Line):Point|null{
         const slope = (shape.point2.y - shape.point1.y) / (shape.point2.x - shape.point1.x);
             
         const yIntercept = shape.point1.y - slope * shape.point1.x;
         const expectedY = slope * this.x + yIntercept;
         
         if( Math.abs(expectedY - this.y) < 0.0001 ){
-            return true;
-            // return [new Point(this.x,this.y,true)]; <- for point
+            return new Point(this.x,this.y,true);
         }
 
-        return false;
+        return null;
     }
 
-    static PointRect(this:Point, shape:Rect):boolean{
+    static PointRect(this:Point, shape:Rect):Point|null{
         if(
             this.x >= shape.x && this.x <= shape.x + shape.width &&
             this.y >= shape.y && this.y <= shape.y + shape.height 
         ){
-            return true;
+            return new Point(this.x,this.y,true);
         }
 
-        return false;
+        return null;
     }
 
-    static PointCircle(this:Point, shape:Circle):boolean{
+    static PointCircle(this:Point, shape:Circle):Point|null{
         const distance = Math.sqrt(Math.pow(shape.x - this.x, 2) + Math.pow(shape.y - this.y, 2));
         if(distance <= shape.radius){
-            return true;
+            return new Point(this.x,this.y,true);
         }
 
-        return false;
+        return null;
     }             
 
-    static PointTriangle(this:Point, shape:Triangle):boolean{
+    static PointTriangle(this:Point, shape:Triangle):Point|null{
         const area  = Math.abs((shape.point2.x - shape.point1.x) * (shape.point3.y - shape.point1.y) - (shape.point3.x - shape.point1.x) * (shape.point2.y - shape.point1.y));
         const area1 = Math.abs((shape.point1.x - this.x) * (shape.point2.y - this.y) - (shape.point2.x - this.x) * (shape.point1.y - this.y));
         const area2 = Math.abs((shape.point2.x - this.x) * (shape.point3.y - this.y) - (shape.point3.x - this.x) * (shape.point2.y - this.y));
         const area3 = Math.abs((shape.point3.x - this.x) * (shape.point1.y - this.y) - (shape.point1.x - this.x) * (shape.point3.y - this.y));
         
         if(area === area1 + area2 + area3){
-            return true;
+            return new Point(this.x,this.y,true);
         }
 
-        return false;
+        return null;
     }
 
     static LineLine(this:Line, shape:Line):Point[]|null{

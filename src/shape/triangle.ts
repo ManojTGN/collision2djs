@@ -39,7 +39,7 @@ export class Triangle{
         return this.collisionWith.get(shape)?true:false
     }
 
-    getIntersection( shape: Point|Line|Rect|Circle|this ):Point[]|boolean|null{
+    getIntersection( shape: Point|Line|Rect|Circle|this ):Point[]|Point|null{
         if(shape instanceof Line)
             return Collision.LineTriangle.bind(shape,this)()
 

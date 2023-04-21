@@ -36,7 +36,7 @@ export class Circle{
         return this.collisionWith.get(shape)?true:false
     }
 
-    getIntersection( shape: Point|Line|Rect|this|Triangle ):Point[]|boolean|null{
+    getIntersection( shape: Point|Line|Rect|this|Triangle ):Point[]|Point|null{
         if(shape instanceof Line)
             return Collision.LineCircle.bind(shape,this)()
 

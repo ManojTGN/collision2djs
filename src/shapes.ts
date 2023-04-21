@@ -22,10 +22,10 @@ export class Shapes{
     }
 
     static collision(element:Point|Line|Rect|Circle|Triangle){
-    
+
         let En_Events: Map<(Point|Line|Rect|Circle|Triangle),TEvent[]> = new Map();
         let Ex_Events: Map<(Point|Line|Rect|Circle|Triangle),(Point|Line|Rect|Circle|Triangle)[]> = new Map();
-        
+
         Ex_Events.set(element,[]);
         En_Events.set(element,[]);
 
@@ -34,6 +34,8 @@ export class Shapes{
 
             let prevCollision = element.collisionWith.get(shape);
             let points = shape.getIntersection(element);
+            if(points && !(points instanceof Array))
+                points = [points];
 
             if(points == null && prevCollision == true){ // EXIT
                 let arr = Ex_Events.get(element);
@@ -41,16 +43,17 @@ export class Shapes{
                     arr.push(shape);
                     Ex_Events.set(element,arr);
                 }
+
                 element.collisionWith.delete(shape);
             }else if(points != null && !prevCollision){ // ENTER
                 let arr = En_Events.get(element);
                 if(arr){
-                    arr.push({shape:shape,points:points});
+                    arr.push({shape,points});
                     En_Events.set(element,arr);
                 }
+
                 element.collisionWith.set(shape,true);
             }
-            
         });
 
 

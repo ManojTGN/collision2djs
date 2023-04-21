@@ -43,7 +43,7 @@ export class Rect{
         return this.collisionWith.get(shape)?true:false
     }
 
-    getIntersection( shape: Point|Line|this|Circle|Triangle ):Point[]|boolean|null{
+    getIntersection( shape: Point|Line|this|Circle|Triangle ):Point[]|Point|null{
         if(shape instanceof Line)
             return Collision.LineRect.bind(shape,this)()
 

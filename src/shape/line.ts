@@ -56,7 +56,7 @@ export class Line{
         return this.collisionWith.get(shape)?true:false
     }
 
-    getIntersection( shape: Point|Line|Rect|Circle|Triangle):Point[]|boolean|null{
+    getIntersection( shape: Point|Line|Rect|Circle|Triangle):Point[]|Point|null{
         if(shape instanceof Line)
             return Collision.LineLine.bind(this,shape)()
 
