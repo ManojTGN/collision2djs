@@ -3,6 +3,7 @@ import { Line } from "../shape/line";
 import { Point } from "../shape/point";
 import { Rect } from "../shape/rect";
 import { Triangle } from "../shape/triangle";
+import Collision from "./collision";
 
 export interface TEvent {
     shape:(Point|Line|Rect|Circle|Triangle),
@@ -27,10 +28,14 @@ export class Shapes{
 
         Shapes.SHAPES.forEach( (shape) => {
             let events:TEvent[]|undefined;
-            let prevState = shape.collisionWith.get(element);
-            let intersections:Point[]|Point|null = shape.getIntersection(element);
             
-            if(!prevState && intersections){
+            let prevState = shape.collisionWith.get(element);
+            let collision:boolean = Collision.collide(shape,element);
+            
+            let intersections:Point[]|Point|null = shape.getIntersection(element);
+            if(!intersections) intersections = new Array();
+
+            if(!prevState && collision){
 
                 if(intersections instanceof Point)
                     intersections = [intersections];
@@ -62,7 +67,7 @@ export class Shapes{
                 return;
             }
 
-            if(prevState && !intersections){
+            if(prevState && !collision){
 
                 if(!onExitEvent.get(element) && element.onTrigger)
                     onExitEvent.set(element,new Array());
