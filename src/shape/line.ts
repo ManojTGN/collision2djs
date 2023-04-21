@@ -12,7 +12,7 @@ export class Line{
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
 
     onCollisionEnter: ((event:TEvent[])=>void)|null;
-    onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
+    onCollisionExit: ((event:TEvent[])=>void)|null;
 
     set x1(x1:number){
         this.point1.x = x1;

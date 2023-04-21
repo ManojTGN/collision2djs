@@ -12,7 +12,7 @@ export class Circle{
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
 
     onCollisionEnter: ((event:TEvent[])=>void)|null;
-    onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
+    onCollisionExit: ((event:TEvent[])=>void)|null;
     
     set x(x:number){
         this.point.x = x;

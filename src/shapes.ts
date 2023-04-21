@@ -22,52 +22,87 @@ export class Shapes{
     }
 
     static collision(element:Point|Line|Rect|Circle|Triangle){
+        let onEnterEvent:Map<(Point|Line|Rect|Circle|Triangle),TEvent[]> = new Map();
+        let onExitEvent:Map<(Point|Line|Rect|Circle|Triangle),TEvent[]>  = new Map();
 
-        let En_Events: Map<(Point|Line|Rect|Circle|Triangle),TEvent[]> = new Map();
-        let Ex_Events: Map<(Point|Line|Rect|Circle|Triangle),(Point|Line|Rect|Circle|Triangle)[]> = new Map();
+        Shapes.SHAPES.forEach( (shape) => {
+            let events:TEvent[]|undefined;
+            let prevState = shape.collisionWith.get(element);
+            let intersections:Point[]|Point|null = shape.getIntersection(element);
 
-        Ex_Events.set(element,[]);
-        En_Events.set(element,[]);
+            if(!prevState && intersections){
 
-        Shapes.SHAPES.forEach((shape)=>{
-            if( shape == element ) return;
-
-            let prevCollision = element.collisionWith.get(shape);
-            let points = shape.getIntersection(element);
-            if(points && !(points instanceof Array))
-                points = [points];
-
-            if(points == null && prevCollision == true){ // EXIT
-                let arr = Ex_Events.get(element);
-                if(arr){
-                    arr.push(shape);
-                    Ex_Events.set(element,arr);
-                }
-
-                element.collisionWith.delete(shape);
-            }else if(points != null && !prevCollision){ // ENTER
-                let arr = En_Events.get(element);
-                if(arr){
-                    arr.push({shape,points});
-                    En_Events.set(element,arr);
-                }
+                if(intersections instanceof Point)
+                    intersections = [intersections];
 
                 element.collisionWith.set(shape,true);
+                if(!onEnterEvent.get(element) && element.onTrigger)
+                    onEnterEvent.set(element,new Array());
+                if(element.onTrigger){
+                    events = onEnterEvent.get(element);
+                    if(events){
+                        events.push({shape,points:intersections});
+                        onEnterEvent.set(element,events);
+                        events = new Array();
+                    }
+                }
+                
+                shape.collisionWith.set(element,true);
+                if(!onEnterEvent.get(shape) && shape.onTrigger)
+                    onEnterEvent.set(shape,new Array());
+                if(element.onTrigger){
+                    events = onEnterEvent.get(shape);
+                    if(events){
+                        events.push({shape:element,points:intersections});
+                        onEnterEvent.set(element,events);
+                        events = new Array();
+                    }
+                }
+
+                return;
             }
+
+            if(prevState && !intersections){
+
+                if(!onExitEvent.get(element) && element.onTrigger)
+                    onExitEvent.set(element,new Array());
+                if(element.onTrigger){
+                    events = onExitEvent.get(element);
+                    if(events){
+                        events.push({shape,points:new Array()});
+                        onExitEvent.set(element,events);
+                        events = new Array();
+                    }
+                }
+
+                if(!onExitEvent.get(shape) && shape.onTrigger)
+                    onExitEvent.set(shape,new Array());
+                if(shape.onTrigger){
+                    events = onExitEvent.get(shape);
+                    if(events){
+                        events.push({shape:element,points:new Array()});
+                        onExitEvent.set(shape,events);
+                        events = new Array();
+                    }
+                }
+
+                shape.collisionWith.delete(element);
+                element.collisionWith.delete(shape);
+                return;
+            }
+
         });
 
-
-        En_Events.forEach((value,key)=>{
-            if(value.length > 0 && key.onCollisionEnter != null){
-                key.onCollisionEnter(value);
-            }
+        onEnterEvent.forEach((event,shape) => {
+            if(event.length > 0 && shape.onCollisionEnter)
+                shape.onCollisionEnter(event);
         });
 
-        Ex_Events.forEach((value,key)=>{
-            if(value.length > 0 && key.onCollisionExit != null){
-                key.onCollisionExit(value);
-            }
-        });
+        onExitEvent.forEach((event,shape) => {
+            if(event.length > 0 && shape.onCollisionExit)
+                shape.onCollisionExit(event);
+        })
+
     }
 
     static collision_all(){

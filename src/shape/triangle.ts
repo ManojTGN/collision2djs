@@ -12,7 +12,7 @@ export class Triangle{
     onTrigger:boolean;
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
     onCollisionEnter: ((event:TEvent[])=>void)|null;
-    onCollisionExit: ((event:(Point|Line|Rect|Circle|Triangle)[])=>void)|null;
+    onCollisionExit: ((event:TEvent[])=>void)|null;
 
     set p1(p1:Point){
         this.point1.x = p1.x;
