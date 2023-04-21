@@ -29,7 +29,7 @@ export class Shapes{
             let events:TEvent[]|undefined;
             let prevState = shape.collisionWith.get(element);
             let intersections:Point[]|Point|null = shape.getIntersection(element);
-
+            
             if(!prevState && intersections){
 
                 if(intersections instanceof Point)
@@ -94,12 +94,12 @@ export class Shapes{
         });
 
         onEnterEvent.forEach((event,shape) => {
-            if(event.length > 0 && shape.onCollisionEnter)
+            if(event && event.length > 0 && shape.onCollisionEnter)
                 shape.onCollisionEnter(event);
         });
 
         onExitEvent.forEach((event,shape) => {
-            if(event.length > 0 && shape.onCollisionExit)
+            if(event && event.length > 0 && shape.onCollisionExit)
                 shape.onCollisionExit(event);
         })
 

@@ -256,7 +256,7 @@ export default class Collision {
     static CircleCircle(this:Circle, shape:Circle):Point[]|null{
 
         let d = Math.sqrt((shape.x - this.x) ** 2 + (shape.y - this.y) ** 2);
-        if (d > this.radius + (shape.radius/2) || d < Math.abs( (this.radius/2) - (shape.radius/2))) {
+        if (d > (this.radius/2) + (shape.radius/2) || d < Math.abs( (this.radius/2) - (shape.radius/2))) {
             return null;
         }
 
@@ -265,8 +265,8 @@ export default class Collision {
         let x3 = this.x + a * (shape.x - this.x) / d;
         let y3 = this.y + a * (shape.y - this.y) / d;
         
-        if (d == this.radius + this.radius || d == Math.abs((this.radius/2) - (this.radius/2))) {
-            return [new Point(x3, y3, true)];
+        if (d == (this.radius/2) + (this.radius/2) || d == Math.abs((this.radius/2) - (this.radius/2))) {
+            return null;//[new Point(x3, y3, true)];
         }else{
             let h = Math.sqrt((this.radius/2) ** 2 - a ** 2);
             let x4 = x3 + h * (shape.y - this.y) / d;
