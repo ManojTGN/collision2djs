@@ -6,12 +6,24 @@ import { Rect } from "./rect";
 import { Triangle } from "./triangle";
 
 export class Point{
-    x:number;
-    y:number;
+    _x:number;
+    _y:number;
     onTrigger:boolean;
     collisionWith: Map<(Point|Line|Rect|Circle|Triangle),boolean>;
     onCollisionEnter: ((event:TEvent[])=>void)|null;
     onCollisionExit: ((event:TEvent[])=>void)|null;
+
+    set x(x:number){
+        this._x = x;
+        Shapes.collision(this);
+    }
+    get x():number{return this._x;}
+
+    set y(y:number){
+        this._y = y;
+        Shapes.collision(this);
+    }
+    get y():number{return this._y;}
 
     isCollideWith( shape:this|Line|Rect|Circle|Triangle ):boolean{
         return this.collisionWith.get(shape)?true:false
@@ -37,8 +49,8 @@ export class Point{
     }
 
     constructor(x:number,y:number){
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
         this.onTrigger = true;
         this.collisionWith = new Map();
         this.onCollisionEnter = null;

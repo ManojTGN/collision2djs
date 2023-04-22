@@ -83,7 +83,24 @@ export default class Collision {
     }
 
     static PointLine(this:Point, shape:Line):boolean{
-        return Intersection.PointLine.bind(this,shape)()?true:false;
+        var segmentLength = Math.sqrt(Math.pow(shape.x2 - shape.x1, 2) + Math.pow(shape.y2 - shape.y1, 2));
+
+        var dotProduct = ((this.x - shape.x1) * (shape.x2 - shape.x1) + (this.y - shape.y1) * (shape.y2 - shape.y1)) / Math.pow(segmentLength, 2);
+        var closestX = shape.x1 + dotProduct * (shape.x2 - shape.x1);
+        var closestY = shape.y1 + dotProduct * (shape.y2 - shape.y1);
+
+        if (closestX < Math.min(shape.x1, shape.x2) || closestX > Math.max(shape.x1, shape.x2) ||
+            closestY < Math.min(shape.y1, shape.y2) || closestY > Math.max(shape.y1, shape.y2)) {
+            return false;
+        }
+
+        var distance = Math.sqrt(Math.pow(this.x - closestX, 2) + Math.pow(this.y - closestY, 2));
+        var tolerance = 1e-6;
+        if (distance <= tolerance) {
+            return true;
+        }
+
+        return false;
     }
 
     static PointRect(this:Point, shape:Rect):boolean{
@@ -99,7 +116,7 @@ export default class Collision {
 
     static PointCircle(this:Point, shape:Circle):boolean{
         const distance = Math.sqrt(Math.pow(shape.x - this.x, 2) + Math.pow(shape.y - this.y, 2));
-        if(distance <= shape.radius){
+        if(distance <= (shape.radius/2)){
             return true;
         }
 
@@ -107,13 +124,14 @@ export default class Collision {
     }             
 
     static PointTriangle(this:Point, shape:Triangle):boolean{
+        var alpha = ((shape.p2.y - shape.p3.y) * (this.x - shape.p3.x) + (shape.p3.x - shape.p2.x) * (this.y - shape.p3.y)) / ((shape.p2.y - shape.p3.y) * (shape.p1.x - shape.p3.x) + (shape.p3.x - shape.p2.x) * (shape.p1.y - shape.p3.y));
+        var beta  = ((shape.p3.y - shape.p1.y) * (this.x - shape.p3.x) + (shape.p3.x - shape.p3.x) * (this.y - shape.p3.y)) / ((shape.p2.y - shape.p3.y) * (shape.p1.x - shape.p3.x) + (shape.p3.x - shape.p2.x) * (shape.p1.y - shape.p3.y));
+        var gamma = 1 - alpha - beta;
 
-        let detT = (shape.p2.y - shape.p3.y) * (shape.p1.x - shape.p3.x) + (shape.p3.x - shape.p2.x) * (shape.p1.y - shape.p3.y);
-        let beta = ((shape.p2.y - shape.p3.y) * (this.x - shape.p3.x) + (shape.p3.x - shape.p2.x) * (this.y - shape.p3.y)) / detT;
-        let gamma = ((shape.p3.y - shape.p1.y) * (this.x - shape.p3.x) + (shape.p1.x - shape.p3.x) * (this.y - shape.p3.y)) / detT;
-        let alpha = 1 - beta - gamma;
-        
-        return alpha >= 0 && alpha <= 1 && beta >= 0 && beta <= 1 && gamma >= 0 && gamma <= 1;
+        if (alpha >= 0 && beta >= 0 && gamma >= 0) 
+            return true;
+
+        return false;
     }
 
     static LineLine(this:Line, shape:Line):boolean{
@@ -138,35 +156,70 @@ export default class Collision {
     }
 
     static LineRect(this:Line, shape:Rect):boolean{
-        let axisX = this.y1 - this.y2;
-        let axisY = this.x2 - this.x1;
-
-        let length = Math.sqrt(axisX * axisX + axisY * axisY);
-        axisX /= length;
-        axisY /= length;
-
-        let p1 = (this.x1 * axisX + this.y1 * axisY);
-        let p2 = (this.x2 * axisX + this.y2 * axisY);
-
-        let r1 = (shape.x * axisX + shape.y * axisY);
-        let r2 = ((shape.x + shape.width) * axisX + shape.y * axisY);
-        let r3 = ((shape.x + shape.width) * axisX + (shape.y + shape.height) * axisY);
-        let r4 = (shape.x * axisX + (shape.y + shape.height) * axisY);
-
-        let lineMin = Math.min(p1, p2);
-        let lineMax = Math.max(p1, p2);
-
-        return  (lineMin <= r4 && lineMax >= r1) || (lineMin <= r1 && lineMax >= r2) ||
-                (lineMin <= r2 && lineMax >= r3) || (lineMin <= r3 && lineMax >= r4) ;
+        const rectRight = shape.x + shape.width;
+        const rectBottom = shape.y + shape.height;
+        
+        // Check if line segment is outside the rectangle
+        if (this.x1 < shape.x && this.x2 < shape.x ||
+            this.x1 > rectRight && this.x2 > rectRight ||
+            this.y1 < shape.y && this.y2 < shape.y ||
+            this.y1 > rectBottom && this.y2 > rectBottom) {
+          return false;
+        }
+      
+        // Check if line segment intersects any of the rectangle's sides
+        if (this.x1 >= shape.x && this.x1 <= rectRight && this.y1 >= shape.y && this.y1 <= rectBottom ||
+            this.x2 >= shape.x && this.x2 <= rectRight && this.y2 >= shape.y && this.y2 <= rectBottom) {
+          return true;
+        }
+      
+        // Check if line segment intersects rectangle's horizontal sides
+        const m = (this.y2 - this.y1) / (this.x2 - this.x1);
+        const yLeft = m * (shape.x - this.x1) + this.y1;
+        const yRight = m * (rectRight - this.x1) + this.y1;
+        if ((yLeft >= shape.y && yLeft <= rectBottom) ||
+            (yRight >= shape.y && yRight <= rectBottom)) {
+          return true;
+        }
+      
+        // Check if line segment intersects rectangle's vertical sides
+        const invM = (this.x2 - this.x1) / (this.y2 - this.y1);
+        const xTop = invM * (shape.y - this.y1) + this.x1;
+        const xBottom = invM * (rectBottom - this.y1) + this.x1;
+        if ((xTop >= shape.x && xTop <= rectRight) ||
+            (xBottom >= shape.x && xBottom <= rectRight)) {
+          return true;
+        }
+      
+        return false;
     }
 
     static LineCircle(this:Line, shape:Circle):boolean{
-        const dx = this.x2 - this.x1;
-        const dy = this.y2 - this.y1;
-        const lineLength = Math.sqrt(dx * dx + dy * dy);
-        const distanceToLine = Math.abs(dx * (shape.y - this.y1) - dy * (shape.x - this.x1)) / lineLength;
         
-        return distanceToLine <= shape.radius;
+        return Intersection.LineCircle.bind(this,shape)()?true:false;
+
+        //todo: horizontal circle line collision not detected (bug)
+        // const dx = this.x2 - this.x1;
+        // const dy = this.y2 - this.y1;
+        // const lineLength = Math.sqrt(dx * dx + dy * dy);
+    
+        // const crossProduct = (shape.x - this.x1) * dy - (shape.y - this.y1) * dx;
+    
+        // if(Math.abs(crossProduct / lineLength) > (shape.radius/2)){
+        //     return false;
+        // }
+    
+        // const dotProduct = (shape.x - this.x1) * dx + (shape.y - this.y1) * dy;
+        // if(dotProduct < 0 || dotProduct > lineLength * lineLength){
+        //     return false;
+        // }
+    
+        // const distanceToLine = Math.abs(dx * (shape.y - this.y1) - dy * (shape.x - this.x1)) / lineLength;
+        // if (distanceToLine > (shape.radius/2) && lineLength > (shape.radius/2)) {
+        //     return false;
+        // }
+    
+        // return true;
     }
 
     static LineTriangle(this:Line, shape:Triangle):boolean{
@@ -205,7 +258,7 @@ export default class Collision {
         let distanceY = shape.y - closestY;
         let distanceSquared = distanceX * distanceX + distanceY * distanceY;
 
-        return distanceSquared < (shape.radius * shape.radius);
+        return distanceSquared < ((shape.radius/2) * (shape.radius/2));
     }
 
     static RectTriangle(this:Rect, shape:Triangle):boolean{

@@ -5,10 +5,7 @@ import { Rect } from "../shape/rect";
 import { Triangle } from "../shape/triangle";
 import Collision from "./collision";
 
-export interface TEvent {
-    shape:(Point|Line|Rect|Circle|Triangle),
-    points:Point[]|boolean
-}
+export type TEvent = (Point|Line|Rect|Circle|Triangle);
 
 export class Shapes{
     static SHAPES:(Point|Line|Rect|Circle|Triangle)[] = [];
@@ -38,17 +35,10 @@ export class Shapes{
             if(element == shape) return;
 
             let events:TEvent[]|undefined;
-            
             let prevState = shape.collisionWith.get(element);
             let collision:boolean = Collision.collide(shape,element);
-            
-            let intersections:Point[]|Point|null = shape.getIntersection(element);
-            if(!intersections) intersections = new Array();
 
             if(!prevState && collision){
-
-                if(intersections instanceof Point)
-                    intersections = [intersections];
 
                 element.collisionWith.set(shape,true);
                 if(!onEnterEvent.get(element) && element.onTrigger)
@@ -56,7 +46,7 @@ export class Shapes{
                 if(element.onTrigger){
                     events = onEnterEvent.get(element);
                     if(events){
-                        events.push({shape,points:intersections});
+                        events.push(shape);
                         onEnterEvent.set(element,events);
                         events = new Array();
                     }
@@ -68,7 +58,7 @@ export class Shapes{
                 if(element.onTrigger){
                     events = onEnterEvent.get(shape);
                     if(events){
-                        events.push({shape:element,points:intersections});
+                        events.push(element);
                         onEnterEvent.set(element,events);
                         events = new Array();
                     }
@@ -84,7 +74,7 @@ export class Shapes{
                 if(element.onTrigger){
                     events = onExitEvent.get(element);
                     if(events){
-                        events.push({shape,points:new Array()});
+                        events.push(shape);
                         onExitEvent.set(element,events);
                         events = new Array();
                     }
@@ -95,7 +85,7 @@ export class Shapes{
                 if(shape.onTrigger){
                     events = onExitEvent.get(shape);
                     if(events){
-                        events.push({shape:element,points:new Array()});
+                        events.push(element);
                         onExitEvent.set(shape,events);
                         events = new Array();
                     }
