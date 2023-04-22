@@ -6,8 +6,7 @@ on:
             - main
 
 jobs:
-    push:
-        name: 🚀 Publish
+    publish-gpr:
         runs-on: ubuntu-latest
         steps:
             - name: checkout
@@ -17,7 +16,6 @@ jobs:
               with:
                 node-version: 16
                 registry-url: https://registry.npmjs.org
-            - name: 🚀 Publish
               run: npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
