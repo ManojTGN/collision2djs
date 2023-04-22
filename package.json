@@ -1,13 +1,13 @@
 {
   "name": "collision2djs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lib/main.js",
   "type": "commonjs",
   "scripts": {
     "build": "tsc && rollup --format es --input ./build/tsBuild/main.js -o ./build/collision2d.js && uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
     "bnt": "npm run build && npm run browser && npm run test",
-    "browser":"browserify ./build/collision2d.js -p esmify > ./build/bundle.js",
+    "browser": "browserify ./build/collision2d.js -p esmify > ./build/bundle.js",
     "minify": "uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
     "test": "node ./test/test.js"
   },
@@ -22,7 +22,7 @@
   ],
   "author": "ManojTGN",
   "license": "MIT",
-  "files":[
+  "files": [
     "lib"
   ],
   "bugs": {
