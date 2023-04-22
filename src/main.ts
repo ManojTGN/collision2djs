@@ -10,7 +10,7 @@ const addShape = Shapes.add;
 const removeShape = Shapes.remove;
 
 export {
-    
+
     Point,
     Line,
 
