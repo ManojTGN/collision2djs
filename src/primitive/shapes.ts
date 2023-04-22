@@ -51,7 +51,7 @@ export class Shapes{
                         events = new Array();
                     }
                 }
-                
+
                 shape.collisionWith.set(element,true);
                 if(!onEnterEvent.get(shape) && shape.onTrigger)
                     onEnterEvent.set(shape,new Array());
