@@ -12,8 +12,8 @@ jobs:
         steps:
             - name: checkout
               uses: actions/checkout@v3.5.2
-            - name: node
-              uses: actions/setup-node@2.5.2
+            - name: Setup Node.js environment
+              uses: actions/setup-node@v2.5.2
               with:
                 node-version: 16
                 registry-url: https://registry.npmjs.org
