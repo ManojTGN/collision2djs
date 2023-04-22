@@ -16,9 +16,9 @@ jobs:
             - uses: actions/setup-node@v2.5.2
               with:
                 node-version: 16
-                registry-url: https://npm.pkg.github.com/
+                registry-url: https://npm.pkg.github.com
                 scope: '@ManojTGN'
             - run: npm ci
             - run: npm publish --access public
               env:
-                  NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN }}
