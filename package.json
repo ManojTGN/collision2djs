@@ -5,10 +5,10 @@
   "main": "lib/main.js",
   "type": "commonjs",
   "scripts": {
-    "build": "tsc && rollup --format es --input ./build/tsBuild/main.js -o ./build/collision2d.js && uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
+    "build": "tsc && rollup --format es --input ./build/tsBuild/main.js -o ./lib/collision2d.js && uglifyjs ./lib/collision2d.js -o ./build/collision2d.min.js",
     "bnt": "npm run build && npm run browser && npm run test",
-    "browser": "browserify ./build/collision2d.js -p esmify > ./build/bundle.js",
-    "minify": "uglifyjs ./build/collision2d.js -o ./build/collision2d.min.js",
+    "browser": "browserify ./lib/collision2d.js -p esmify > ./build/bundle.js",
+    "minify": "uglifyjs ./lib/collision2d.js -o ./build/collision2d.min.js",
     "test": "node ./test/test.js"
   },
   "repository": {
