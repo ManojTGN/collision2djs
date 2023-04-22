@@ -1,9 +1,9 @@
-name: "🚀 Publish"
+name: 🚀 Publish
 
 on:
     push:
         branches:
-            -main
+            - main
 
 jobs:
     push:
