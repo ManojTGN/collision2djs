@@ -30,8 +30,9 @@ jobs:
               with:
                 node-version: 16
                 registry-url: 'https://registry.npmjs.org/'
+                scope: '@ManojTGN'
             - run: | 
-                  npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+                  npm config set //registry.npmjs.org/:_authToken=${{secrets.NODE_AUTH_TOKEN}}
                   npm config set scope "@ManojTGN"
                   npm config list
                   npm publish --access public
