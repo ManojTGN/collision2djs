@@ -1,19 +1,20 @@
 name: 💡 NPM Publish
 
 on:
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
-  publish-npm:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: 16
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@manojtgn'
-      - run: npm ci
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+    push:
+        name: 💡 NPM Publish
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v3.5.2
+            - name: node
+              uses: actions/setup-node@2.5.2
+              with:
+                node-version: 16
+                registry-url: https://registry.npmjs.org
+              run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
