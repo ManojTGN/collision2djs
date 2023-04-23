@@ -16,7 +16,9 @@
 shape.onCollisionEnter = function( event ){}
 ```
 onCollisionEnter Function
-
+`
+Note: Only Works After Adding The Function To Collision2D Using addShape().
+`
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -32,7 +34,9 @@ onCollisionEnter Function
 shape.onCollisionExit = function( event ){}
 ```
 onCollisionExit Function
-
+`
+Note: Only Works After Adding The Function To Collision2D Using addShape().
+`
 
 | Param | Type | Description |
 | --- | --- | --- |

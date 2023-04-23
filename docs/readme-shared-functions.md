@@ -21,7 +21,7 @@ shape.isCollideWith( shape )
 ```
 isCollideWith Function
 `
-Note: Only Works If The Shapes Are Pushed Using The addShape Function.
+Note: Only Works After Adding The Function To Collision2D Using addShape().
 `
 
 | Param | Type | Description |
