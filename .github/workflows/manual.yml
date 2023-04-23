@@ -1,26 +1,22 @@
-# This is a basic workflow that is manually triggered
-
 name: 💡 Manual workflow
 
-# Controls when the action will run. Workflow runs when manually triggered using the UI
-# or API.
 on:
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
-  mpublish:
-    runs-on: ubuntu-latest
-    permissions:
-        packages: write
-        contents: read
-    steps:
-        # Publish to NPMJS
-        - uses: actions/checkout@v3.5.2
-        - uses: actions/setup-node@v2.5.2
-            with:
-            node-version: 16
-            registry-url: 'https://registry.npmjs.org/'
-        - name: Publish to NPMJS
+    publish-manual:
+        runs-on: ubuntu-latest
+        permissions:
+            packages: write
+            contents: read
+        steps:
+            # Publish to NPMJS
+            - uses: actions/checkout@v3.5.2
+            - uses: actions/setup-node@v2.5.2
+                with:
+                node-version: 16
+                registry-url: 'https://registry.npmjs.org/'
+            - name: Publish to NPMJS
             run: |
                 npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
                 npm config set scope "@ManojTGN"
@@ -30,15 +26,15 @@ jobs:
                 CI: true
                 NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
 
-        # Publish to GitHub Package Registry
-        - uses: actions/checkout@v3.5.2
-        - uses: actions/setup-node@v2.5.2
-          with:
-            node-version: 16
-            registry-url: https://npm.pkg.github.com
-            scope: '@ManojTGN'
-        - name: Publish to GitHub Package Registry
-        - run: npm ci
-        - run: npm publish --access public
-          env:
-              NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN }}
+            # Publish to GitHub Package Registry
+            - uses: actions/checkout@v3.5.2
+            - uses: actions/setup-node@v2.5.2
+            with:
+                node-version: 16
+                registry-url: https://npm.pkg.github.com
+                scope: '@ManojTGN'
+            - name: Publish to GitHub Package Registry
+            - run: npm ci
+            - run: npm publish --access public
+            env:
+                NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN }}
