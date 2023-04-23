@@ -18,6 +18,7 @@ jobs:
             packages: write
             contents: read
         steps:
+            - if: ${{ inputs.choice == 'both' || inputs.choice == 'github'}}
             # Publish to GitHub Package Registry
             - uses: actions/checkout@v3.5.2
             - name: Publish to GitHub Package Registry
@@ -30,6 +31,7 @@ jobs:
             - run: npm publish --access public
               env:
                 NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN }}
+            - if: ${{ inputs.choice == 'both' || inputs.choice == 'npm'}}
             # Publish to NPMJS
             - uses: actions/checkout@v3.5.2
             - name: Publish to NPMJS
