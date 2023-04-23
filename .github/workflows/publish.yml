@@ -11,10 +11,8 @@ jobs:
             packages: write
             contents: read
         steps:
-            # Publish to GitHub Package Registry
             - uses: actions/checkout@v3.5.2
-            - name: Publish to GitHub Package Registry
-              uses: actions/setup-node@v2.5.2
+            - uses: actions/setup-node@v2.5.2
               with:
                 node-version: 16
                 registry-url: https://npm.pkg.github.com
@@ -22,20 +20,5 @@ jobs:
             - run: npm ci
             - run: npm publish --access public
               env:
-                NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN }}
-            # Publish to NPMJS
-            - uses: actions/checkout@v3.5.2
-            - name: Publish to NPMJS
-              uses: actions/setup-node@v2.5.2
-              with:
-                node-version: 16
-                registry-url: 'https://registry.npmjs.org/'
-                scope: '@ManojTGN'
-            - run: | 
-                  npm config set //registry.npmjs.org/:_authToken=${{secrets.NODE_AUTH_TOKEN}}
-                  npm config set scope "@ManojTGN"
-                  npm config list
-                  npm publish --access public
-              env:
-                CI: true
-                NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN }}
+ 
