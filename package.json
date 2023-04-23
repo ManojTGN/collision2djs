@@ -1,12 +1,9 @@
 {
-  "name": "collision2djs",
+  "name": "@manojtgn/collision2djs",
   "version": "1.0.4",
   "description": "",
   "main": "lib/main.js",
   "type": "commonjs",
-  "publishConfig": {
-    "@ManojTGN:registry": "https://npm.pkg.github.com/"
-  },
   "scripts": {
     "build": "tsc && rollup --format es --input ./build/tsBuild/main.js -o ./lib/collision2d.js && uglifyjs ./lib/collision2d.js -o ./build/collision2d.min.js",
     "bnt": "npm run build && npm run browser && npm run test",
