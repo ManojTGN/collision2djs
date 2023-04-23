@@ -2,8 +2,8 @@
 
 This documentation provides detailed information about the functions provided by the `@manojtgn/collision2djs` npm package.
 
-- [Shapes](README-Shapes.md)
-- [Events](README-Events.md)
+- [Shapes](readme-shapes.md)
+- [Events](readme-events.md)
 
 - [Examples](../examples/)
 
