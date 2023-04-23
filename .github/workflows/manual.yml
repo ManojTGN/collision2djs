@@ -13,7 +13,7 @@ jobs:
         steps:
             # Publish to NPMJS
             - uses: actions/checkout@v3.5.2
-            - uses: actions/setup-node@v2.5.2
+              uses: actions/setup-node@v2.5.2
             - name: Publish to NPMJS
               with:
                 node-version: 16
