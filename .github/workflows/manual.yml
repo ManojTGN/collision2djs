@@ -1,50 +1,29 @@
 name: 💡 Manual workflow
 
 on:
-    workflow_dispatch:
-        inputs:
-            choice:
-                type: choice
-                description: Select Registry
-                options:
-                - github
-                - npm
-                - both
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: 'Select a registry to publish to'
+        required: true
+        default: 'both'
+        options:
+          - 'both'
+          - 'npm'
+          - 'github'
 jobs:
-    publishmanual:
-        if: github.event.inputs.choice == 'both' || github.event.inputs.choice == 'github'
-        # The type of runner that the job will run on
-        runs-on: ubuntu-latest
-        permissions:
-            packages: write
-            contents: read
-        steps:
-            # Publish to GitHub Package Registry
-            - uses: actions/checkout@v3.5.2
-            - name: Publish to GitHub Package Registry
-              uses: actions/setup-node@v2.5.2
-              with:
-                node-version: 16
-                registry-url: https://npm.pkg.github.com
-                scope: '@ManojTGN'
-            - run: npm ci
-            - run: npm publish --access public
-              env:
-                NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN }}
-            # Publish to NPMJS
-            - uses: actions/checkout@v3.5.2
-            - name: Publish to NPMJS
-              
-              uses: actions/setup-node@v2.5.2
-              with:
-                node-version: 16
-                registry-url: 'https://registry.npmjs.org/'
-                scope: '@ManojTGN'
-            - run: | 
-                  npm config set //registry.npmjs.org/:_authToken=${{secrets.NODE_AUTH_TOKEN}}
-                  npm config set scope "@ManojTGN"
-                  npm config list
-                  npm publish --access public
-              env:
-                CI: true
-                NODE_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Publish to NPM
+        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'npm' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: npm publish
+      - name: Publish to GitHub Package Registry
+        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'github' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > .npmrc && npm publish --registry=https://npm.pkg.github.com/
