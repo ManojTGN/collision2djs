@@ -2,7 +2,14 @@ name: 💡 Manual workflow
 
 on:
     workflow_dispatch:
-
+        inputs:
+            choice:
+                type: choice
+                description: Select Registry
+                options:
+                - github
+                - npm
+                - both
 jobs:
     publishmanual:
         # The type of runner that the job will run on
