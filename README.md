@@ -24,8 +24,8 @@ Here's an example of how to detect a collision between two rectangles:
 ```js
 const { Rect, Circle } = require("@manojtgn/collision2djs");
 
-const circle = circle(400, 400, 25);
-const rect = rect(10,10,100,100);
+const circle = new Circle(400, 400, 25);
+const rect = new Rect(10,10,100,100);
 
 if (circle.isCollideWith(rect)) {
    console.log("Colliding!");
