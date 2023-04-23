@@ -4,6 +4,9 @@ This documentation provides detailed information about the functions provided by
 
 - [Shapes](readme-shapes.md)
 - [Events](readme-events.md)
+- [SharedFunctions](readme-shared-functions.md)
+
+<br>
 
 - [Examples](../examples/)
 
