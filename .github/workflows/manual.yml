@@ -29,11 +29,13 @@ jobs:
       - name: Authenticate with GitHub Package Registry
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'github' }}
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
 
       - name: Authenticate with npm Registry
         env:
           NPM_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
+        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'npm' }}
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
 
       - name: Publish to GitHub Package Registry
