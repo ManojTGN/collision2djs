@@ -1,8 +1,7 @@
 name: 💡 GIT Publish
 
 on:
-    release:
-        types: [created]
+    workflow_dispatch:
 
 jobs:
     publish-gpr:
@@ -11,9 +10,9 @@ jobs:
             packages: write
             contents: read
         steps:
-            - uses: actions/checkout@v3.5.2
+            - uses: actions/checkout@master
             - name: Publish to GitHub Package Registry
-              uses: actions/setup-node@v2.5.2
+              uses: actions/setup-node@master
               with:
                 node-version: 16
                 registry-url: https://npm.pkg.github.com
