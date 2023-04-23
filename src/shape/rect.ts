@@ -62,7 +62,14 @@ export class Rect{
         
         return null;
     }
-
+    /**
+     * Rect Constructor
+     * @param {number} x      - x-coordinate of the object Rect
+     * @param {number} y      - y-coordinate of the object Rect
+     * @param {number} width  - width of the object Rect
+     * @param {number} height - height of the object Height
+     * 
+     */
     constructor(x:number, y:number, width:number, height:number = width){
         this.point = new Point(x,y);
         this.w = width;

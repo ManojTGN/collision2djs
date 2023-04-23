@@ -56,6 +56,13 @@ export class Circle{
         return null;
     }
 
+    /**
+     * Line Constructor
+     * @param {number} x      - circle center x-coordinate
+     * @param {number} y      - circle center y-coordinate
+     * @param {number} radius - radius of the object circle
+     * 
+     */
     constructor(x:number,y:number,radius:number){
         this.point = new Point(x,y);
         this.r = radius;

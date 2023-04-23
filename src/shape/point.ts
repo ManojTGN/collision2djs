@@ -48,6 +48,12 @@ export class Point{
         return null;
     }
 
+    /**
+     * Point Constructor
+     * @param {number} x - x-coordinate of the object Point
+     * @param {number} y - y-coordinate of the object Point
+     * 
+     */
     constructor(x:number,y:number){
         this._x = x;
         this._y = y;

@@ -75,6 +75,14 @@ export class Line{
         return null;
     }
 
+    /**
+     * Line Constructor
+     * @param {number} x1 - x-coordinate of the Line Starting Point
+     * @param {number} y1 - y-coordinate of the Line Starting Point
+     * @param {number} x2 - x-coordinate of the Line Ending Point
+     * @param {number} y2 - y-coordinate of the Line Ending Point
+     * 
+     */
     constructor(x1:number,y1:number,x2:number,y2:number){
         this.point1 = new Point(x1,y1);
         this.point2 = new Point(x2,y2);

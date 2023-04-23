@@ -89,6 +89,16 @@ export class Triangle{
         return null;
     }
 
+    /**
+     * Triangle Constructor
+     * @param {number} x1 - x-coordinate of the Triangle's Point1
+     * @param {number} y1 - y-coordinate of the Triangle's Point1
+     * @param {number} x2 - x-coordinate of the Triangle's Point2
+     * @param {number} y2 - y-coordinate of the Triangle's Point2
+     * @param {number} x3 - x-coordinate of the Triangle's Point3
+     * @param {number} y3 - y-coordinate of the Triangle's Point3
+     * 
+     */
     constructor(x1:number,y1:number,x2:number,y2:number,x3:number,y3:number){
         this.point1 = new Point(x1,y1);
         this.point2 = new Point(x2,y2);
