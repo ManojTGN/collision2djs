@@ -3,14 +3,15 @@ name: 💡 Manual workflow
 on:
   workflow_dispatch:
     inputs:
-      registry:
-        description: 'Select a registry to publish to'
+      choice:
+        description: 'Select a registry'
         required: true
-        default: 'both'
+        type: choice
         options:
           - 'both'
           - 'npm'
           - 'github'
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -29,19 +30,19 @@ jobs:
       - name: Authenticate with GitHub Package Registry
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'github' }}
+        if: ${{ github.event.inputs.choice == 'both' || github.event.inputs.choice == 'github' }}
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
 
       - name: Authenticate with npm Registry
         env:
           NPM_AUTH_TOKEN: ${{secrets.NODE_AUTH_TOKEN}}
-        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'npm' }}
+        if: ${{ github.event.inputs.choice == 'both' || github.event.inputs.choice == 'npm' }}
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
 
       - name: Publish to GitHub Package Registry
-        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'github' }}
+        if: ${{ github.event.inputs.choice == 'both' || github.event.inputs.choice == 'github' }}
         run: npm publish --registry=https://npm.pkg.github.com/
 
       - name: Publish to npm Registry
-        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'npm' }}
+        if: ${{ github.event.inputs.choice == 'both' || github.event.inputs.choice == 'npm' }}
         run: npm publish
