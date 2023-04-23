@@ -1,6 +1,6 @@
 {
   "name": "@manojtgn/collision2djs",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "./lib/collision2d.js",
   "type": "commonjs",
@@ -11,7 +11,6 @@
     "minify": "uglifyjs ./lib/collision2d.js -o ./build/collision2d.min.js",
     "test": "node ./test/test.js"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ManojTGN/collision2djs.git"
