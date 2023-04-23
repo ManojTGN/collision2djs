@@ -12,6 +12,7 @@ on:
                 - both
 jobs:
     publishmanual:
+        if: github.event.inputs.choice == 'both' || github.event.inputs.choice == 'github'
         # The type of runner that the job will run on
         runs-on: ubuntu-latest
         permissions:
@@ -21,7 +22,6 @@ jobs:
             # Publish to GitHub Package Registry
             - uses: actions/checkout@v3.5.2
             - name: Publish to GitHub Package Registry
-              if: ${{ inputs.choice == 'both' || inputs.choice == 'github'}}
               uses: actions/setup-node@v2.5.2
               with:
                 node-version: 16
@@ -34,7 +34,7 @@ jobs:
             # Publish to NPMJS
             - uses: actions/checkout@v3.5.2
             - name: Publish to NPMJS
-              if: ${{ inputs.choice == 'both' || inputs.choice == 'npm'}}
+              
               uses: actions/setup-node@v2.5.2
               with:
                 node-version: 16
