@@ -6,9 +6,6 @@ name: Manual workflow
 # or API.
 on:
   workflow_dispatch:
-    inputs:
-      name: 
-        description: 'mPublish'
 
 jobs:
   mpublish:
