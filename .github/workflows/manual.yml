@@ -15,15 +15,27 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Publish to NPM
-        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'npm' }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-        run: npm publish
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Authenticate with GitHub Package Registry
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+
+      - name: Authenticate with npm Registry
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+
       - name: Publish to GitHub Package Registry
         if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'github' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > .npmrc && npm publish --registry=https://npm.pkg.github.com/
+        run: npm publish --registry=https://npm.pkg.github.com/
+
+      - name: Publish to npm Registry
+        if: ${{ github.event.inputs.registry == 'both' || github.event.inputs.registry == 'npm' }}
+        run: npm publish
