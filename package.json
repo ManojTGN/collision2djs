@@ -11,10 +11,6 @@
     "minify": "uglifyjs ./lib/collision2d.js -o ./build/collision2d.min.js",
     "test": "node ./test/test.js"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ManojTGN/collision2djs.git"
