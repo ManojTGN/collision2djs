@@ -1,8 +1,8 @@
 # collision2djs
- 
+ <img src="https://github.com/ManojTGN/collision2djs/assets/42494649/a866cf1a-678a-4529-80a3-2e1e58759b1d" alt="previewGif" width="300" align="left"/>
 @manojtgn/collision2djs is a versatile and efficient npm package designed to accurately detect and compute collision and intersection points between various 2D shapes such as lines, rectangles, circles, and triangles.
-
 This package offers a range of optimized algorithms to ensure high-performance and precision in collision detection. Whether you're working on a game or any other application that requires 2D collision detection, @manojtgn/collision2djs provides a reliable and user-friendly solution.
+<br clear="left"/>
 
 ## Features
 - Accurately detects collision and intersection points between 2D shapes
@@ -26,6 +26,7 @@ const { Rect, Circle } = require("@manojtgn/collision2djs");
 
 const circle = new Circle(400, 400, 25);
 const rect = new Rect(10,10,100,100);
+addShape(rect);addShape(circle);
 
 if (circle.isCollideWith(rect)) {
    console.log("Colliding!");
