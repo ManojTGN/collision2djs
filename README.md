@@ -1,4 +1,11 @@
 # collision2djs
+<p>
+<img alt="npm" src="https://img.shields.io/npm/dt/%40manojtgn%2Fcollision2djs">
+<img alt="NPM" src="https://img.shields.io/npm/l/%40manojtgn%2Fcollision2djs"> 
+<img alt="npm bundle size" src="https://img.shields.io/bundlephobia/min/%40manojtgn%2Fcollision2djs">
+<img alt="npm" src="https://img.shields.io/npm/v/%40manojtgn%2Fcollision2djs">
+</p>
+
  <img src="https://github.com/ManojTGN/collision2djs/assets/42494649/a866cf1a-678a-4529-80a3-2e1e58759b1d" alt="previewGif" width="300" align="left"/>
 @manojtgn/collision2djs is a versatile and efficient npm package designed to accurately detect and compute collision and intersection points between various 2D shapes such as lines, rectangles, circles, and triangles.
 This package offers a range of optimized algorithms to ensure high-performance and precision in collision detection. Whether you're working on a game or any other application that requires 2D collision detection, @manojtgn/collision2djs provides a reliable and user-friendly solution.
